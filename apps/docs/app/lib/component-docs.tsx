@@ -209,17 +209,22 @@ function createDoc(id: ComponentDocId, overrides: Partial<ComponentDoc> = {}): C
     preview: componentPreviews[id],
     code: previewCode,
     installation: {
-      command: `pnpm add ${base.title.toLowerCase().replace(/\s+/g, "-")}`,
+      command: "pnpm add @maslazu/lazu-ui",
       manual: [
         {
-          title: "Copy and paste component source into your project.",
-          filename: titleToFileName(base.title),
-          code: previewCode,
+          title: "Install package from GitHub Packages.",
+          code: "pnpm add @maslazu/lazu-ui",
+          lang: "bash",
+        },
+        {
+          title: "Import shared stylesheet once in your app shell.",
+          code: 'import "@maslazu/lazu-ui/styles.css";',
           lang: "tsx",
         },
         {
-          title: "Update import paths to match your project setup.",
-          note: "Replace aliases or helpers to match your app structure before shipping.",
+          title: `Import ${base.title} from package root.`,
+          code: base.importPath,
+          lang: "tsx",
         },
       ],
     },
@@ -255,13 +260,6 @@ function createDoc(id: ComponentDocId, overrides: Partial<ComponentDoc> = {}): C
 
 export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
   button: createDoc("button", {
-    installation: {
-      command: "pnpm add button",
-      manual: [
-        { title: "Copy and paste button source into your project.", filename: "components/ui/button.tsx", code: previewCodeById.button, lang: "tsx" },
-        { title: "Update import paths to match your project setup." },
-      ],
-    },
     composition: {
       description: "Use following composition to build button actions.",
       tree: "Button",
@@ -273,6 +271,7 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
         props: [
           { prop: "variant", type: '"solid" | "outline" | "ghost" | "destructive"', default: '"solid"' },
           { prop: "size", type: '"sm" | "md" | "lg"', default: '"md"' },
+          { prop: "type", type: '"button" | "submit" | "reset"', default: '"button"' },
           { prop: "className", type: "string", default: "-" },
         ],
       },
@@ -286,25 +285,20 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
     api: [
       { name: "Card", description: "Card provides bounded surface for grouped content.", props: [{ prop: "className", type: "string", default: "-" }] },
       { name: "CardHeader", description: "CardHeader groups title and supporting description.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "CardTitle", description: "CardTitle renders emphasized heading inside card header.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "CardDescription", description: "CardDescription renders supporting summary text.", props: [{ prop: "className", type: "string", default: "-" }] },
       { name: "CardContent", description: "CardContent renders main body content.", props: [{ prop: "className", type: "string", default: "-" }] },
       { name: "CardFooter", description: "CardFooter aligns actions and summaries at bottom.", props: [{ prop: "className", type: "string", default: "-" }] },
     ],
   }),
   input: createDoc("input", {
     composition: { description: "Use following composition to build labeled text input.", tree: "Label\n└── Input" },
-    api: [{ name: "Input", description: "Input renders single-line text, email, and search fields.", props: [{ prop: "type", type: '"text" | "email" | "password" | string', default: '"text"' }, { prop: "className", type: "string", default: "-" }] }],
+    api: [{ name: "Input", description: "Input renders single-line text, email, search, and date-time fields.", props: [{ prop: "type", type: '"text" | "email" | "password" | string', default: '"text"' }, { prop: "className", type: "string", default: "-" }, { prop: "disabled", type: "boolean", default: "false" }] }],
   }),
   badge: createDoc("badge", {
     api: [{ name: "Badge", description: "Badge displays small semantic status labels and counters.", props: [{ prop: "variant", type: '"default" | "secondary" | "success" | "warning" | "destructive"', default: '"default"' }, { prop: "className", type: "string", default: "-" }] }],
   }),
   alert: createDoc("alert", {
-    installation: {
-      command: "pnpm add alert",
-      manual: [
-        { title: "Copy and paste alert source into your project.", filename: "components/ui/alert.tsx", code: previewCodeById.alert, lang: "tsx" },
-        { title: "Update import paths to match your project setup." },
-      ],
-    },
     usage: {
       importCode: 'import { Alert, AlertDescription, AlertTitle } from "@maslazu/lazu-ui";',
       exampleCode: `<Alert>\n  <Bell className="size-4" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>\n    You can add components and dependencies to your app using Dev Kit.\n  </AlertDescription>\n</Alert>`,
@@ -324,7 +318,8 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
     ],
   }),
   avatar: createDoc("avatar", {
-    api: [{ name: "Avatar", description: "Avatar renders person initials or image fallback by name.", props: [{ prop: "name", type: "string", default: "required" }, { prop: "size", type: '"sm" | "md" | "lg"', default: '"md"' }] }],
+    composition: { description: "Avatar is standalone surface with optional image and deterministic fallback.", tree: "Avatar" },
+    api: [{ name: "Avatar", description: "Avatar renders person initials or image fallback by name.", props: [{ prop: "name", type: "string", default: "required" }, { prop: "src", type: "string", default: "-" }, { prop: "seed", type: "string", default: "-" }, { prop: "size", type: '"sm" | "md" | "lg"', default: '"md"' }, { prop: "className", type: "string", default: "-" }] }],
   }),
   textarea: createDoc("textarea", {
     composition: { description: "Use following composition to build multi-line form input.", tree: "Label\n└── Textarea" },
@@ -334,35 +329,201 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
     composition: { description: "Use following composition to build modal workflows.", tree: "Dialog\n├── DialogTrigger\n└── DialogContent\n    ├── DialogHeader\n    ├── DialogTitle\n    ├── DialogDescription\n    └── DialogFooter" },
     api: [
       { name: "Dialog", description: "Dialog coordinates open state and accessibility for modal flows.", props: [{ prop: "open", type: "boolean", default: "uncontrolled" }, { prop: "onOpenChange", type: "(open: boolean) => void", default: "-" }] },
+      { name: "DialogTrigger", description: "DialogTrigger opens dialog from trigger element or render prop target.", props: [{ prop: "render", type: "ReactElement", default: "-" }, { prop: "className", type: "string", default: "-" }] },
       { name: "DialogContent", description: "DialogContent renders modal panel body.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "DialogHeader", description: "DialogHeader groups dialog title and description.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "DialogFooter", description: "DialogFooter aligns action buttons in dialog footer.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "DialogTitle", description: "DialogTitle renders accessible modal heading.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "DialogDescription", description: "DialogDescription renders supporting modal copy.", props: [{ prop: "className", type: "string", default: "-" }] },
     ],
   }),
   tooltip: createDoc("tooltip", {
     composition: { description: "Use following composition to build contextual hints.", tree: "TooltipProvider\n└── Tooltip\n    ├── TooltipTrigger\n    └── TooltipContent" },
-    api: [{ name: "TooltipContent", description: "TooltipContent renders hint panel near trigger.", props: [{ prop: "side", type: '"top" | "right" | "bottom" | "left"', default: '"top"' }, { prop: "className", type: "string", default: "-" }] }],
+    api: [
+      { name: "TooltipProvider", description: "TooltipProvider shares timing and interaction behavior for nested tooltips.", props: [{ prop: "delay", type: "number", default: "-" }] },
+      { name: "Tooltip", description: "Tooltip coordinates open state for trigger and content.", props: [{ prop: "open", type: "boolean", default: "uncontrolled" }, { prop: "onOpenChange", type: "(open: boolean) => void", default: "-" }] },
+      { name: "TooltipTrigger", description: "TooltipTrigger defines interactive target that reveals tooltip content.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TooltipContent", description: "TooltipContent renders hint panel near trigger.", props: [{ prop: "sideOffset", type: "number", default: "8" }, { prop: "className", type: "string", default: "-" }] },
+    ],
   }),
   tabs: createDoc("tabs", {
     composition: { description: "Use following composition to build section switching in place.", tree: "Tabs\n├── TabsList\n├── TabsTrigger\n└── TabsContent" },
-    api: [{ name: "Tabs", description: "Tabs manages selection state across related content panes.", props: [{ prop: "defaultValue", type: "string", default: "required" }, { prop: "className", type: "string", default: "-" }] }],
+    api: [
+      { name: "Tabs", description: "Tabs manages selection state across related content panes.", props: [{ prop: "defaultValue", type: "string", default: "required" }, { prop: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"' }, { prop: "className", type: "string", default: "-" }] },
+      { name: "TabsList", description: "TabsList arranges tab triggers and supports visual variants.", props: [{ prop: "variant", type: '"default" | "line"', default: '"default"' }, { prop: "className", type: "string", default: "-" }] },
+      { name: "TabsTrigger", description: "TabsTrigger selects panel associated with matching value.", props: [{ prop: "value", type: "string", default: "required" }, { prop: "className", type: "string", default: "-" }] },
+      { name: "TabsContent", description: "TabsContent renders panel content for matching tab value.", props: [{ prop: "value", type: "string", default: "required" }, { prop: "className", type: "string", default: "-" }] },
+    ],
   }),
   select: createDoc("select", {
     composition: { description: "Use following composition to build styled choice picker.", tree: "Select\n├── SelectTrigger\n│   └── SelectValue\n└── SelectContent\n    └── SelectItem" },
-    api: [{ name: "Select", description: "Select manages single-value listbox interaction.", props: [{ prop: "defaultValue", type: "string", default: "-" }, { prop: "value", type: "string", default: "uncontrolled" }] }],
+    api: [
+      { name: "Select", description: "Select manages single-value listbox interaction.", props: [{ prop: "defaultValue", type: "string", default: "-" }, { prop: "value", type: "string", default: "uncontrolled" }, { prop: "onValueChange", type: "(value: string) => void", default: "-" }] },
+      { name: "SelectTrigger", description: "SelectTrigger renders anchor button for current value and popup toggle.", props: [{ prop: "size", type: '"sm" | "default"', default: '"default"' }, { prop: "className", type: "string", default: "-" }] },
+      { name: "SelectValue", description: "SelectValue renders selected option label or placeholder text.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "SelectContent", description: "SelectContent renders popup surface and placement behavior.", props: [{ prop: "side", type: '"top" | "right" | "bottom" | "left" | "inline-start" | "inline-end"', default: '"bottom"' }, { prop: "align", type: '"center" | "start" | "end"', default: '"center"' }, { prop: "className", type: "string", default: "-" }] },
+      { name: "SelectItem", description: "SelectItem renders selectable option row inside popup list.", props: [{ prop: "value", type: "string", default: "required" }, { prop: "className", type: "string", default: "-" }] },
+    ],
   }),
   "dropdown-menu": createDoc("dropdown-menu", {
     composition: { description: "Use following composition to build contextual action menus.", tree: "DropdownMenu\n├── DropdownMenuTrigger\n└── DropdownMenuContent\n    ├── DropdownMenuLabel\n    ├── DropdownMenuItem\n    └── DropdownMenuSeparator" },
-    api: [{ name: "DropdownMenuItem", description: "DropdownMenuItem renders action row inside menu surface.", props: [{ prop: "variant", type: '"default" | "destructive"', default: '"default"' }, { prop: "className", type: "string", default: "-" }] }],
+    api: [
+      { name: "DropdownMenu", description: "DropdownMenu coordinates menu open state and keyboard interactions.", props: [{ prop: "open", type: "boolean", default: "uncontrolled" }, { prop: "onOpenChange", type: "(open: boolean) => void", default: "-" }] },
+      { name: "DropdownMenuTrigger", description: "DropdownMenuTrigger anchors menu to trigger element or render prop target.", props: [{ prop: "render", type: "ReactElement", default: "-" }] },
+      { name: "DropdownMenuContent", description: "DropdownMenuContent renders popup surface and placement behavior.", props: [{ prop: "align", type: '"start" | "center" | "end"', default: '"start"' }, { prop: "side", type: '"top" | "right" | "bottom" | "left" | "inline-start" | "inline-end"', default: '"bottom"' }, { prop: "className", type: "string", default: "-" }] },
+      { name: "DropdownMenuLabel", description: "DropdownMenuLabel renders non-interactive section heading inside menu.", props: [{ prop: "inset", type: "boolean", default: "false" }, { prop: "className", type: "string", default: "-" }] },
+      { name: "DropdownMenuItem", description: "DropdownMenuItem renders action row inside menu surface.", props: [{ prop: "variant", type: '"default" | "destructive"', default: '"default"' }, { prop: "inset", type: "boolean", default: "false" }, { prop: "className", type: "string", default: "-" }] },
+      { name: "DropdownMenuSeparator", description: "DropdownMenuSeparator divides related groups of menu items.", props: [{ prop: "className", type: "string", default: "-" }] },
+    ],
   }),
-  switch: createDoc("switch", { api: [{ name: "Switch", description: "Switch toggles boolean state between on and off values.", props: [{ prop: "defaultChecked", type: "boolean", default: "false" }, { prop: "checked", type: "boolean", default: "uncontrolled" }] }] }),
-  table: createDoc("table", { composition: { description: "Use following composition to build structured tables.", tree: "Table\n├── TableHeader\n│   └── TableRow\n│       └── TableHead\n└── TableBody\n    └── TableRow\n        └── TableCell" } }),
-  pagination: createDoc("pagination", { api: [{ name: "Pagination", description: "Pagination summarizes current page and navigation state.", props: [{ prop: "currentPage", type: "number", default: "required" }, { prop: "pageSize", type: "number", default: "required" }, { prop: "totalItems", type: "number", default: "required" }] }] }),
-  "navigation-menu": createDoc("navigation-menu", { composition: { description: "Use following composition to build top-level nav with optional popups.", tree: "NavigationMenu\n└── NavigationMenuList\n    └── NavigationMenuItem\n        ├── NavigationMenuLink\n        ├── NavigationMenuTrigger\n        └── NavigationMenuContent" } }),
-  loading: createDoc("loading", { api: [{ name: "Loading", description: "Loading presents centered progress state for panels and pages.", props: [{ prop: "fullScreen", type: "boolean", default: "true" }, { prop: "text", type: "string", default: '"Loading..."' }] }] }),
-  "password-input": createDoc("password-input", { api: [{ name: "PasswordInput", description: "PasswordInput wraps secure field, label, and validation message.", props: [{ prop: "label", type: "string", default: "-" }, { prop: "error", type: "string", default: "-" }] }] }),
-  "confirm-dialog": createDoc("confirm-dialog", { api: [{ name: "ConfirmDialog", description: "ConfirmDialog handles dangerous or high-impact confirmation flows.", props: [{ prop: "title", type: "string", default: "required" }, { prop: "description", type: "string", default: "required" }, { prop: "variant", type: '"default" | "destructive"', default: '"default"' }] }] }),
-  "searchable-select": createDoc("searchable-select", { api: [{ name: "SearchableSelect", description: "SearchableSelect combines search filtering with single-value selection.", props: [{ prop: "options", type: "Array<{ value: string; label: string }>", default: "required" }, { prop: "value", type: "string", default: "-" }] }] }),
-  "searchable-multi-select": createDoc("searchable-multi-select", { api: [{ name: "SearchableMultiSelect", description: "SearchableMultiSelect manages multiple selected values with inline chips.", props: [{ prop: "options", type: "Array<{ value: string; label: string }>", default: "required" }, { prop: "values", type: "string[]", default: "[]" }] }] }),
-  "time-range-select": createDoc("time-range-select", { api: [{ name: "TimeRangeSelect", description: "TimeRangeSelect coordinates absolute range values and quick picks.", props: [{ prop: "from", type: "string", default: "required" }, { prop: "to", type: "string", default: "required" }, { prop: "showRefresh", type: "boolean", default: "false" }] }] }),
+  switch: createDoc("switch", { api: [{ name: "Switch", description: "Switch toggles boolean state between on and off values.", props: [{ prop: "defaultChecked", type: "boolean", default: "false" }, { prop: "checked", type: "boolean", default: "uncontrolled" }, { prop: "thumbClassName", type: "string", default: "-" }, { prop: "className", type: "string", default: "-" }] }] }),
+  table: createDoc("table", {
+    composition: { description: "Use following composition to build structured tables.", tree: "Table\n├── TableHeader\n│   └── TableRow\n│       └── TableHead\n├── TableBody\n│   └── TableRow\n│       └── TableCell\n├── TableFooter\n└── TableCaption" },
+    api: [
+      { name: "Table", description: "Table renders outer table element and wrapper styling hook.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableHeader", description: "TableHeader renders semantic table head section.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableBody", description: "TableBody renders semantic table body section.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableFooter", description: "TableFooter renders semantic table footer summary row group.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableRow", description: "TableRow renders row with shared hover and selected styling.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableHead", description: "TableHead renders header cell with muted label treatment.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableCell", description: "TableCell renders body cell content.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "TableCaption", description: "TableCaption renders supporting caption below table.", props: [{ prop: "className", type: "string", default: "-" }] },
+    ],
+  }),
+  pagination: createDoc("pagination", { composition: { description: "Pagination is standalone navigation summary with previous and next controls.", tree: "Pagination" }, api: [{ name: "Pagination", description: "Pagination summarizes current page and navigation state.", props: [{ prop: "currentPage", type: "number", default: "required" }, { prop: "pageSize", type: "number", default: "required" }, { prop: "totalItems", type: "number", default: "required" }, { prop: "onPageChange", type: "(page: number) => void", default: "required" }, { prop: "className", type: "string", default: "-" }] }] }),
+  "navigation-menu": createDoc("navigation-menu", {
+    composition: { description: "Use following composition to build top-level nav with optional popups.", tree: "NavigationMenu\n└── NavigationMenuList\n    └── NavigationMenuItem\n        ├── NavigationMenuLink\n        ├── NavigationMenuTrigger\n        └── NavigationMenuContent" },
+    api: [
+      { name: "NavigationMenu", description: "NavigationMenu coordinates nav alignment and popup viewport behavior.", props: [{ prop: "align", type: '"start" | "center" | "end"', default: '"start"' }, { prop: "className", type: "string", default: "-" }] },
+      { name: "NavigationMenuList", description: "NavigationMenuList arranges visible nav items across the top level.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "NavigationMenuItem", description: "NavigationMenuItem groups individual link or trigger content.", props: [{ prop: "className", type: "string", default: "-" }] },
+      { name: "NavigationMenuLink", description: "NavigationMenuLink renders top-level or popup navigation destination.", props: [{ prop: "active", type: "boolean", default: "false" }, { prop: "closeOnClick", type: "boolean", default: "-" }, { prop: "className", type: "string", default: "-" }] },
+      { name: "NavigationMenuTrigger", description: "NavigationMenuTrigger opens popup content for nested navigation groups.", props: [{ prop: "active", type: "boolean", default: "false" }, { prop: "className", type: "string", default: "-" }] },
+      { name: "NavigationMenuContent", description: "NavigationMenuContent renders popup panel content for trigger item.", props: [{ prop: "className", type: "string", default: "-" }] },
+    ],
+  }),
+  loading: createDoc("loading", { composition: { description: "Loading is standalone status surface for page or panel placeholders.", tree: "Loading" }, api: [{ name: "Loading", description: "Loading presents centered progress state for panels and pages.", props: [{ prop: "fullScreen", type: "boolean", default: "true" }, { prop: "text", type: "string", default: '"Loading..."' }, { prop: "className", type: "string", default: "-" }] }] }),
+  "password-input": createDoc("password-input", {
+    usage: {
+      importCode: 'import { PasswordInput } from "@maslazu/lazu-ui";',
+      exampleCode: `const register = {
+  name: "password",
+  onBlur: () => undefined,
+  onChange: () => undefined,
+  ref: () => undefined,
+};
+
+<PasswordInput
+  register={register}
+  label="Account password"
+  error="Password must be at least 12 characters."
+/>`,
+    },
+    composition: { description: "Use following composition to build secure field with reveal toggle.", tree: "PasswordInput" },
+    api: [{ name: "PasswordInput", description: "PasswordInput wraps secure field, label, and validation message.", props: [{ prop: "register", type: "{ name: string; onBlur: fn; onChange: fn; ref: fn }", default: "required" }, { prop: "label", type: "string", default: "-" }, { prop: "error", type: "string", default: "-" }] }],
+  }),
+  "confirm-dialog": createDoc("confirm-dialog", {
+    usage: {
+      importCode: 'import { useState } from "react";\nimport { Button, ConfirmDialog } from "@maslazu/lazu-ui";',
+      exampleCode: `function Example() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>
+        Open confirm dialog
+      </Button>
+      <ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Archive detection"
+        description="This removes active visibility from rule catalog."
+        confirmLabel="Archive"
+        cancelLabel="Keep it"
+        onConfirm={() => undefined}
+        variant="destructive"
+      />
+    </>
+  );
+}`,
+    },
+    composition: { description: "ConfirmDialog is standalone confirmation overlay wrapper.", tree: "ConfirmDialog" },
+    api: [{ name: "ConfirmDialog", description: "ConfirmDialog handles dangerous or high-impact confirmation flows.", props: [{ prop: "open", type: "boolean", default: "required" }, { prop: "onOpenChange", type: "(open: boolean) => void", default: "required" }, { prop: "title", type: "string", default: "required" }, { prop: "description", type: "string", default: "required" }, { prop: "onConfirm", type: "() => void | Promise<void>", default: "required" }, { prop: "confirmLabel", type: "string", default: '"Confirm"' }, { prop: "cancelLabel", type: "string", default: '"Cancel"' }, { prop: "loadingLabel", type: "string", default: '"Working..."' }, { prop: "variant", type: '"default" | "destructive"', default: '"default"' }] }],
+  }),
+  "searchable-select": createDoc("searchable-select", {
+    usage: {
+      importCode: 'import { useState } from "react";\nimport { SearchableSelect } from "@maslazu/lazu-ui";',
+      exampleCode: `function Example() {
+  const [value, setValue] = useState("critical");
+  const options = [
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
+    { value: "critical", label: "Critical", description: "Escalates immediately" },
+  ];
+
+  return (
+    <SearchableSelect
+      value={value}
+      onValueChange={setValue}
+      options={options}
+      placeholder="Choose severity"
+      searchPlaceholder="Filter severities"
+    />
+  );
+}`,
+    },
+    composition: { description: "SearchableSelect is standalone searchable single-select popover.", tree: "SearchableSelect" },
+    api: [{ name: "SearchableSelect", description: "SearchableSelect combines search filtering with single-value selection.", props: [{ prop: "options", type: "Array<{ value: string; label: string; description?: string }>", default: "required" }, { prop: "value", type: "string | null", default: "-" }, { prop: "onValueChange", type: "(value: string) => void", default: "required" }, { prop: "allowCustomValue", type: "boolean", default: "false" }, { prop: "searchPlaceholder", type: "string", default: '"Search"' }, { prop: "emptyText", type: "string", default: '"No results"' }] }],
+  }),
+  "searchable-multi-select": createDoc("searchable-multi-select", {
+    usage: {
+      importCode: 'import { useState } from "react";\nimport { SearchableMultiSelect } from "@maslazu/lazu-ui";',
+      exampleCode: `function Example() {
+  const [values, setValues] = useState(["auth", "network"]);
+  const options = [
+    { value: "auth", label: "Authentication" },
+    { value: "network", label: "Network" },
+    { value: "endpoint", label: "Endpoint" },
+    { value: "email", label: "Email" },
+  ];
+
+  return (
+    <SearchableMultiSelect
+      values={values}
+      onValuesChange={setValues}
+      options={options}
+      placeholder="Choose data sources"
+      searchPlaceholder="Filter sources"
+    />
+  );
+}`,
+    },
+    composition: { description: "SearchableMultiSelect is standalone searchable multi-select popover with chips.", tree: "SearchableMultiSelect" },
+    api: [{ name: "SearchableMultiSelect", description: "SearchableMultiSelect manages multiple selected values with inline chips.", props: [{ prop: "options", type: "Array<{ value: string; label: string; description?: string }>", default: "required" }, { prop: "values", type: "string[]", default: "required" }, { prop: "onValuesChange", type: "(values: string[]) => void", default: "required" }, { prop: "allowCustomValue", type: "boolean", default: "false" }, { prop: "doneLabel", type: "string", default: '"Done"' }, { prop: "emptyText", type: "string", default: '"No results"' }] }],
+  }),
+  "time-range-select": createDoc("time-range-select", {
+    usage: {
+      importCode: 'import { useState } from "react";\nimport { TimeRangeSelect } from "@maslazu/lazu-ui";',
+      exampleCode: `function Example() {
+  const [range, setRange] = useState({
+    from: "2026-05-16T12:00:00.000Z",
+    to: "2026-05-17T12:00:00.000Z",
+  });
+
+  return (
+    <TimeRangeSelect
+      from={range.from}
+      to={range.to}
+      onChange={(from, to) => setRange({ from, to })}
+      showRefresh
+    />
+  );
+}`,
+    },
+    composition: { description: "TimeRangeSelect is standalone date-range popover with absolute and quick range controls.", tree: "TimeRangeSelect" },
+    api: [{ name: "TimeRangeSelect", description: "TimeRangeSelect coordinates absolute range values and quick picks.", props: [{ prop: "from", type: "string", default: "required" }, { prop: "to", type: "string", default: "required" }, { prop: "onChange", type: "(from: string, to: string) => void", default: "required" }, { prop: "showRefresh", type: "boolean", default: "true" }, { prop: "size", type: '"sm" | "md" | "lg"', default: '"md"' }] }],
+  }),
 };
 
 export type { ComponentDocId };

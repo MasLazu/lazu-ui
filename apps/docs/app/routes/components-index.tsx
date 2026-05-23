@@ -30,7 +30,7 @@ export default function ComponentsIndexRoute() {
   return (
     <PageLayout
       title={<div id="components-overview" className="scroll-mt-24">Component catalog</div>}
-      description="Browse available `lazu-ui` primitives and richer shared controls. Each card links to usage, preview, and example code."
+      description="Browse available `@maslazu/lazu-ui` primitives and richer shared controls. Each card links to usage, preview, and example code."
       icon={LayoutGrid}
     >
       <section id="components-catalog" className="scroll-mt-24 space-y-8">

@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from "react-router";
 import {
   AlignLeft,
   BadgeCheck,
+  BookOpen,
   ChevronsLeftRight,
   CircleUserRound,
   Clock3,
@@ -28,6 +29,8 @@ import {
 
 import { cn } from "@maslazu/lazu-ui";
 import { SidebarContext } from "@/components/sidebar-context";
+
+const faviconPath = `${import.meta.env.PROD ? "/lazu-ui" : ""}/favicon.svg`;
 
 type DocsNavigationItem = {
   id: string;
@@ -107,14 +110,14 @@ export function DocsSidebar() {
               className="flex w-full items-center gap-3.5 rounded-xl px-3 py-2.5 outline-none md:h-12 md:w-12 md:justify-center md:p-1.5"
               title="Lazu UI"
             >
-              <img src="/favicon.svg" alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />
+              <img src={faviconPath} alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />
             </Link>
           ) : (
             <Link
               to="/"
               className="flex w-full items-center gap-3.5 rounded-xl px-3 py-2.5 outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
-              <img src="/favicon.svg" alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />
+              <img src={faviconPath} alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />
               <div className="min-w-0 flex-1 text-left">
                 <p className="truncate text-lg font-bold text-sidebar-foreground">Lazu UI</p>
               </div>
@@ -125,6 +128,7 @@ export function DocsSidebar() {
         <div className="flex-1 overflow-y-auto overflow-x-hidden py-4">
           <nav className={cn("space-y-6", compactDesktop ? "px-4 md:px-2" : "w-64 px-4")}>
             <SidebarGroup title="Documentation" collapsed={compactDesktop}>
+              <SidebarLink to="/docs/installation" label="Installation" icon={BookOpen} compactDesktop={compactDesktop} exact />
               <SidebarLink to="/docs/components" label="All Components" icon={LayoutGrid} compactDesktop={compactDesktop} exact />
               <SidebarLink to="/docs/theme-editor" label="Theme Editor" icon={Paintbrush} compactDesktop={compactDesktop} exact />
             </SidebarGroup>

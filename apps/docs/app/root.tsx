@@ -2,14 +2,16 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { ThemeProvider } from "next-themes";
 
 import { Toaster } from "@maslazu/lazu-ui";
-import "@maslazu/lazu-ui/styles.css";
+import "../../../packages/ui/src/styles/globals.css";
 
 import type { Route } from "./+types/root";
+
+const docsBasePath = import.meta.env.PROD ? "/lazu-ui" : "";
 
 export const meta: Route.MetaFunction = () => [{ title: "Lazu UI Docs" }];
 
 export const links: Route.LinksFunction = () => [
-  { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+  { rel: "icon", href: `${docsBasePath}/favicon.svg`, type: "image/svg+xml" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

@@ -38,6 +38,12 @@ export default function Home() {
                   <ArrowRight className="size-4" />
                 </Button>
               </Link>
+              <Link to="/docs/installation">
+                <Button variant="outline" className="gap-2">
+                  Installation guide
+                  <ArrowRight className="size-4" />
+                </Button>
+              </Link>
             </div>
             {proofPoints.map((item) => (
               <div key={item} className="rounded-xl border border-border/70 bg-background px-4 py-3 text-sm text-muted-foreground">
