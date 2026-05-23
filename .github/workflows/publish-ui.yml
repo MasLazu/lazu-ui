@@ -49,7 +49,12 @@ jobs:
       - name: Typecheck docs app
         run: pnpm typecheck:docs
 
+      - name: Verify package contents
+        working-directory: packages/ui
+        run: pnpm publish --dry-run --no-git-checks
+
       - name: Publish package
-        run: pnpm --dir packages/ui publish --no-git-checks
+        working-directory: packages/ui
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
