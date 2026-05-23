@@ -83,7 +83,11 @@ jobs:
       - name: Publish UI package
         working-directory: packages/ui
         run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish frontend kit adapter package
         working-directory: packages/frontend-kit-adapter
         run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
