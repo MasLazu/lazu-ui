@@ -12,7 +12,9 @@ permissions:
 
 jobs:
   publish-ui:
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - tag
 
     steps:
       - name: Checkout repository
