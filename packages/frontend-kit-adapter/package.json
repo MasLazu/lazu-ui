@@ -1,6 +1,6 @@
 {
   "name": "@maslazu/lazu-ui-frontend-kit-adapter",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Lazu UI adapter for lazu-frontend-kit UI contracts",
   "license": "UNLICENSED",
   "type": "module",
@@ -32,7 +32,7 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@maslazu/frontend-kit-ui-contracts": "link:../../../lazu-frontend-kit/packages/ui-contracts",
+    "@maslazu/frontend-kit-ui-contracts": "^0.1.0",
     "@maslazu/lazu-ui": "workspace:*",
     "sonner": "^2.0.7"
   },
