@@ -20,6 +20,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Print runner tool versions
+        run: |
+          git --version
+          node --version
+          npm --version
+          pnpm --version
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
