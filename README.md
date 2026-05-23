@@ -163,7 +163,7 @@ Consumer notes:
 
 1. Update version in both `packages/ui/package.json` and `packages/frontend-kit-adapter/package.json`
 2. Commit changes
-3. Create tag like `v0.1.8`
+3. Create tag like `v0.1.9`
 4. Push tag
 5. GitHub Actions publishes both packages to GitHub Packages
 
