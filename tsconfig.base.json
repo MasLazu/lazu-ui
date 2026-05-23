@@ -10,6 +10,8 @@
     "paths": {
       "@/components/*": ["apps/docs/app/components/*"],
       "@/lib/*": ["apps/docs/app/lib/*"],
+      "@maslazu/lazu-ui-frontend-kit-adapter": ["packages/frontend-kit-adapter/src/index.ts"],
+      "@maslazu/lazu-ui-frontend-kit-adapter/*": ["packages/frontend-kit-adapter/src/*"],
       "@maslazu/lazu-ui": ["packages/ui/src/index.ts"],
       "@maslazu/lazu-ui/*": ["packages/ui/src/*"]
     },

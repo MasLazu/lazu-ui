@@ -1,7 +1,7 @@
 {
-  "name": "@maslazu/lazu-ui",
+  "name": "@maslazu/lazu-ui-frontend-kit-adapter",
   "version": "0.1.7",
-  "description": "Shared React UI components for Beacon products",
+  "description": "Lazu UI adapter for lazu-frontend-kit UI contracts",
   "license": "UNLICENSED",
   "type": "module",
   "files": [
@@ -13,12 +13,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./styles.css": "./dist/styles.css"
+    }
   },
-  "sideEffects": [
-    "**/*.css"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MasLazu/lazu-ui.git"
@@ -28,28 +24,22 @@
   },
   "scripts": {
     "clean": "rm -rf dist .tsup",
-    "build": "pnpm run clean && pnpm run build:css && pnpm run build:js",
-    "build:css": "tailwindcss -c tailwind.config.js -i ./src/styles/globals.css -o ./dist/styles.css --minify",
-    "build:js": "tsup src/index.ts --format esm --dts --clean false --external react,react-dom"
+    "build": "pnpm run clean && tsup src/index.ts --format esm --dts --external react,react-dom",
+    "typecheck": "pnpm exec tsc -p tsconfig.json"
   },
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@base-ui/react": "^1.2.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.575.0",
-    "next-themes": "^0.4.6",
-    "sonner": "^2.0.7",
-    "tailwind-merge": "^3.5.0"
+    "@maslazu/frontend-kit-ui-contracts": "link:../../../lazu-frontend-kit/packages/ui-contracts",
+    "@maslazu/lazu-ui": "workspace:*",
+    "sonner": "^2.0.7"
   },
   "devDependencies": {
     "@types/node": "^22.19.19",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "tailwindcss": "^3.4.19",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   }

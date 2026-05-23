@@ -12,9 +12,11 @@
   "scripts": {
     "dev": "pnpm dev:docs",
     "build:ui": "pnpm --dir packages/ui build",
+    "build:frontend-kit-adapter": "pnpm exec tsup packages/frontend-kit-adapter/src/index.ts --format esm --dts --external react,react-dom --out-dir packages/frontend-kit-adapter/dist",
     "dev:docs": "pnpm --dir apps/docs dev",
     "build:docs": "pnpm --dir apps/docs build",
     "build:docs:pages": "pnpm --dir apps/docs build",
-    "typecheck:docs": "pnpm --dir apps/docs typecheck"
+    "typecheck:docs": "pnpm --dir apps/docs typecheck",
+    "typecheck:frontend-kit-adapter": "pnpm exec tsc -p packages/frontend-kit-adapter/tsconfig.json"
   }
 }

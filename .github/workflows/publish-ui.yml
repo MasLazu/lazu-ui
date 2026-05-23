@@ -1,4 +1,4 @@
-name: Publish UI Package
+name: Publish UI Packages
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ permissions:
   packages: write
 
 jobs:
-  publish-ui:
+  publish-ui-packages:
     runs-on:
       - self-hosted
       - tag
@@ -46,25 +46,46 @@ jobs:
       - name: Build UI package
         run: pnpm build:ui
 
+      - name: Build frontend kit adapter package
+        run: pnpm build:frontend-kit-adapter
+
       - name: Typecheck docs app
         run: pnpm typecheck:docs
 
-      - name: Validate release tag matches package version
+      - name: Typecheck frontend kit adapter package
+        run: pnpm typecheck:frontend-kit-adapter
+
+      - name: Validate release tag matches package versions
         if: github.event_name == 'release'
         run: |
-          PACKAGE_VERSION=$(node -p "require('./packages/ui/package.json').version")
+          UI_VERSION=$(node -p "require('./packages/ui/package.json').version")
+          ADAPTER_VERSION=$(node -p "require('./packages/frontend-kit-adapter/package.json').version")
           RELEASE_TAG="${{ github.event.release.tag_name }}"
-          if [ "v${PACKAGE_VERSION}" != "${RELEASE_TAG}" ]; then
-            echo "Release tag ${RELEASE_TAG} does not match package version v${PACKAGE_VERSION}"
+          if [ "v${UI_VERSION}" != "${RELEASE_TAG}" ]; then
+            echo "Release tag ${RELEASE_TAG} does not match UI package version v${UI_VERSION}"
+            exit 1
+          fi
+          if [ "v${ADAPTER_VERSION}" != "${RELEASE_TAG}" ]; then
+            echo "Release tag ${RELEASE_TAG} does not match adapter package version v${ADAPTER_VERSION}"
             exit 1
           fi
 
-      - name: Verify package contents
+      - name: Verify UI package contents
         working-directory: packages/ui
         run: pnpm publish --dry-run --no-git-checks
 
-      - name: Publish package
+      - name: Verify frontend kit adapter package contents
+        working-directory: packages/frontend-kit-adapter
+        run: pnpm publish --dry-run --no-git-checks
+
+      - name: Publish UI package
         working-directory: packages/ui
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish frontend kit adapter package
+        working-directory: packages/frontend-kit-adapter
         run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

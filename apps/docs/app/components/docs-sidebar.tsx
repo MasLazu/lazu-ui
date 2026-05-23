@@ -4,6 +4,7 @@ import {
   AlignLeft,
   BadgeCheck,
   BookOpen,
+  Blocks,
   ChevronsLeftRight,
   CircleUserRound,
   Clock3,
@@ -129,6 +130,7 @@ export function DocsSidebar() {
           <nav className={cn("space-y-6", compactDesktop ? "px-4 md:px-2" : "w-64 px-4")}>
             <SidebarGroup title="Documentation" collapsed={compactDesktop}>
               <SidebarLink to="/docs/installation" label="Installation" icon={BookOpen} compactDesktop={compactDesktop} exact />
+              <SidebarLink to="/docs/frontend-kit-adapter" label="Frontend Kit Adapter" icon={Blocks} compactDesktop={compactDesktop} exact />
               <SidebarLink to="/docs/components" label="All Components" icon={LayoutGrid} compactDesktop={compactDesktop} exact />
               <SidebarLink to="/docs/theme-editor" label="Theme Editor" icon={Paintbrush} compactDesktop={compactDesktop} exact />
             </SidebarGroup>
