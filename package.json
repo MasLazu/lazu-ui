@@ -1,0 +1,18 @@
+{
+  "name": "lazu-ui-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.8.1",
+  "devDependencies": {
+    "@types/node": "^22.19.19",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "tsup": "^8.5.0"
+  },
+  "scripts": {
+    "build:ui": "pnpm --dir packages/ui build",
+    "dev:docs": "pnpm --dir apps/docs dev",
+    "build:docs": "pnpm --dir apps/docs build",
+    "typecheck:docs": "pnpm --dir apps/docs typecheck"
+  }
+}

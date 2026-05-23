@@ -1,0 +1,46 @@
+name: Publish UI Package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "ui-v*"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish-ui:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.8.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: "@maslazu"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build UI package
+        run: pnpm build:ui
+
+      - name: Typecheck docs app
+        run: pnpm typecheck:docs
+
+      - name: Publish package
+        run: pnpm --dir packages/ui publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
