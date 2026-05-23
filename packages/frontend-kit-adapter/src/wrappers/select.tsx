@@ -1,4 +1,4 @@
-import type { SelectProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { SelectProps } from "../types";
 import { FieldShell } from "./shared";
 
 export function Select({ label, error, hint, required, options, children, ...props }: SelectProps) {

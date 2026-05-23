@@ -1,4 +1,4 @@
-import type { TabsProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { TabsProps } from "../types";
 import { Tabs as LazuTabs, TabsContent, TabsList, TabsTrigger } from "@maslazu/lazu-ui";
 
 export function Tabs({ value, onValueChange, items }: TabsProps) {

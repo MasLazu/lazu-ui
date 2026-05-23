@@ -1,4 +1,4 @@
-import type { DetailPageLayoutProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { DetailPageLayoutProps } from "../types";
 
 export function DetailPageLayout({ title, description, actions, aside, children }: DetailPageLayoutProps) {
   return (

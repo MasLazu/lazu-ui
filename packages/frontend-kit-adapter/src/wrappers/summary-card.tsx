@@ -1,4 +1,4 @@
-import type { SummaryCardProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { SummaryCardProps } from "../types";
 import { Card } from "@maslazu/lazu-ui";
 
 export function SummaryCard({ title, value, description, ...props }: SummaryCardProps) {

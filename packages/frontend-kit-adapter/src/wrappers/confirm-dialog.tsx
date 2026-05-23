@@ -1,4 +1,4 @@
-import type { ConfirmDialogProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { ConfirmDialogProps } from "../types";
 import { ConfirmDialog as LazuConfirmDialog } from "@maslazu/lazu-ui";
 
 export function ConfirmDialog({

@@ -1,4 +1,4 @@
-import type { DropdownMenuProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { DropdownMenuProps } from "../types";
 import {
   DropdownMenu as LazuDropdownMenu,
   DropdownMenuContent,

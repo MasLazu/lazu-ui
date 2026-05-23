@@ -1,4 +1,4 @@
-import type { DialogProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { DialogProps } from "../types";
 import {
   Dialog as LazuDialog,
   DialogContent,

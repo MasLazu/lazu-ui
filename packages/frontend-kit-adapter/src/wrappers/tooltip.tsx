@@ -1,4 +1,4 @@
-import type { TooltipProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { TooltipProps } from "../types";
 import { Tooltip as LazuTooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@maslazu/lazu-ui";
 
 export function Tooltip({ content, children }: TooltipProps) {

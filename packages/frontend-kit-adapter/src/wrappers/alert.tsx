@@ -1,4 +1,4 @@
-import type { AlertProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { AlertProps } from "../types";
 import { Alert as LazuAlert, AlertDescription, AlertTitle } from "@maslazu/lazu-ui";
 
 export function Alert({ title, description, variant = "info", children, ...props }: AlertProps) {

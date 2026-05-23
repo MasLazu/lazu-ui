@@ -1,4 +1,4 @@
-import type { ErrorStateProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { ErrorStateProps } from "../types";
 import { Alert, AlertDescription, AlertTitle } from "@maslazu/lazu-ui";
 
 export function ErrorState({ title = "Something went wrong", description, retryAction }: ErrorStateProps) {

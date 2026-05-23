@@ -1,4 +1,4 @@
-import type { PageLayoutProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { PageLayoutProps } from "../types";
 
 export function PageLayout({ title, description, actions, children }: PageLayoutProps) {
   return (

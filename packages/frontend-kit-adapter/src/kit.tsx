@@ -1,4 +1,4 @@
-import type { UiKit } from "@maslazu/frontend-kit-ui-contracts";
+import type { UiKit } from "./types";
 import { adapterToast } from "./toast";
 import { Alert } from "./wrappers/alert";
 import { Avatar } from "./wrappers/avatar";

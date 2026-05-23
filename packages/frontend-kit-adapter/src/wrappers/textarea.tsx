@@ -1,4 +1,4 @@
-import type { TextareaProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { TextareaProps } from "../types";
 import { Textarea as LazuTextarea } from "@maslazu/lazu-ui";
 import { forwardRef } from "react";
 import { FieldShell } from "./shared";

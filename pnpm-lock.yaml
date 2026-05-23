@@ -90,9 +90,6 @@ importers:
 
   packages/frontend-kit-adapter:
     dependencies:
-      '@maslazu/frontend-kit-ui-contracts':
-        specifier: ^0.1.0
-        version: 0.1.0
       '@maslazu/lazu-ui':
         specifier: workspace:*
         version: link:../ui

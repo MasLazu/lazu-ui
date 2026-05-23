@@ -1,4 +1,4 @@
-import type { EmptyStateProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { EmptyStateProps } from "../types";
 
 export function EmptyState({ title, description, action, tone = "neutral" }: EmptyStateProps) {
   const icon = tone === "warning" ? "[!]" : tone === "destructive" ? "[x]" : "[ ]";

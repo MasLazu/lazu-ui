@@ -1,4 +1,4 @@
-import type { LoadingProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { LoadingProps } from "../types";
 import { Loading as LazuLoading } from "@maslazu/lazu-ui";
 
 export function Loading({ label }: LoadingProps) {

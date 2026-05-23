@@ -1,4 +1,4 @@
-import type { SearchableMultiSelectProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { SearchableMultiSelectProps } from "../types";
 import { SearchableMultiSelect as LazuSearchableMultiSelect } from "@maslazu/lazu-ui";
 import { FieldShell } from "./shared";
 

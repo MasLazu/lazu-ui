@@ -4,7 +4,7 @@ import type {
   TableProps,
   TableRowProps,
   TableSectionProps,
-} from "@maslazu/frontend-kit-ui-contracts";
+} from "../types";
 import {
   Table as LazuTable,
   TableBody,

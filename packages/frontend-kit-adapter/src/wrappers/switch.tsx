@@ -1,4 +1,4 @@
-import type { SwitchProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { SwitchProps } from "../types";
 import { Switch as LazuSwitch } from "@maslazu/lazu-ui";
 
 export function Switch({ checked, onCheckedChange, disabled, label }: SwitchProps) {

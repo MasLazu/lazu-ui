@@ -1,4 +1,4 @@
-import type { InputProps } from "@maslazu/frontend-kit-ui-contracts";
+import type { InputProps } from "../types";
 import { Input as LazuInput } from "@maslazu/lazu-ui";
 import { forwardRef } from "react";
 import { FieldShell } from "./shared";
