@@ -1,6 +1,6 @@
 {
   "name": "@maslazu/lazu-ui",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Shared React UI components for Beacon products",
   "license": "UNLICENSED",
   "type": "module",

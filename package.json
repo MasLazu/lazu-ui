@@ -17,6 +17,6 @@
     "build:docs": "pnpm --dir apps/docs build",
     "build:docs:pages": "pnpm --dir apps/docs build",
     "typecheck:docs": "pnpm --dir apps/docs typecheck",
-    "typecheck:frontend-kit-adapter": "pnpm exec tsc -p packages/frontend-kit-adapter/tsconfig.json"
+    "typecheck:frontend-kit-adapter": "pnpm --dir packages/frontend-kit-adapter exec tsc -p tsconfig.json"
   }
 }
