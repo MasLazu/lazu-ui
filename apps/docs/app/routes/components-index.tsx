@@ -11,7 +11,7 @@ import type { DocsLayoutOutletContext } from "./docs-layout";
 
 const componentIconMap = new Map(docsNavigation.map((item) => [item.id, item.icon]));
 const componentGroupMap = new Map(docsNavigation.map((item) => [item.id, item.group]));
-const componentGroups = ["Forms", "Selection", "Feedback", "Overlay", "Navigation", "Data Display"] as const;
+const componentGroups = ["Forms", "Selection", "Feedback", "Overlay", "Navigation", "Data Display", "Layouts", "Composition"] as const;
 const groupSectionIdMap = new Map(componentGroups.map((group) => [group, `components-group-${group.toLowerCase().replace(/\s+/g, "-")}`]));
 
 export default function ComponentsIndexRoute() {

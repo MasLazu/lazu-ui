@@ -1,14 +1,14 @@
-import type { ElementType, ReactNode } from "react";
+import type { ComponentType, ReactNode, SVGProps } from "react";
 
-interface PageLayoutProps {
+export interface PageLayoutProps {
+  pageIcon?: ComponentType<SVGProps<SVGSVGElement>>;
   title: ReactNode;
   description?: ReactNode;
-  icon?: ElementType;
   actions?: ReactNode;
   children: ReactNode;
 }
 
-export function PageLayout({ title, description, icon: Icon, actions, children }: PageLayoutProps) {
+export function PageLayout({ pageIcon: Icon, title, description, actions, children }: PageLayoutProps) {
   return (
     <div className="flex min-h-[calc(100vh-8rem)] w-full flex-col space-y-6 overflow-x-hidden">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

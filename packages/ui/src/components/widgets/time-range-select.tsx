@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Popover } from "@base-ui/react/popover";
 import { CalendarIcon, ChevronDown, Clock, RefreshCw } from "lucide-react";
 
-import { Button } from "./button";
-import { Input } from "./input";
+import { Button } from "../primitives/button";
+import { Input } from "../primitives/input";
 import { cn } from "../../lib/utils";
 
 interface TimeRangeSelectProps {

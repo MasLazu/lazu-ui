@@ -5,6 +5,7 @@ import type {
   InputHTMLAttributes,
   ReactNode,
   SelectHTMLAttributes,
+  SVGProps,
   TextareaHTMLAttributes,
   ThHTMLAttributes,
 } from "react";
@@ -14,6 +15,7 @@ export type ButtonSize = "sm" | "md" | "lg";
 export type AlertVariant = "info" | "success" | "warning" | "destructive";
 export type BadgeVariant = "default" | "secondary" | "outline" | "destructive" | "success" | "warning";
 export type EmptyStateTone = "neutral" | "warning" | "destructive";
+export type PageIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -195,7 +197,26 @@ export interface SummaryCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "
   description?: ReactNode;
 }
 
+export interface MetricCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  title: ReactNode;
+  value: ReactNode;
+  description?: ReactNode;
+  icon?: ReactNode;
+  footer?: ReactNode;
+}
+
+export interface PropertyListItem {
+  label: ReactNode;
+  value: ReactNode;
+  hint?: ReactNode;
+}
+
+export interface PropertyListProps {
+  items: PropertyListItem[];
+}
+
 export interface PageLayoutProps {
+  pageIcon?: PageIconComponent;
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
@@ -203,7 +224,53 @@ export interface PageLayoutProps {
 }
 
 export interface DetailPageLayoutProps extends PageLayoutProps {
+  onBack?: () => void;
+  backTo?: string;
+  toolbar?: ReactNode;
+  secondaryActions?: ReactNode;
   aside?: ReactNode;
+}
+
+export interface AppShellProps {
+  children: ReactNode;
+  desktopCollapsed?: boolean;
+  mobileOpen?: boolean;
+  onDesktopCollapsedChange?: (collapsed: boolean) => void;
+  onMobileOpenChange?: (open: boolean) => void;
+  appIcon?: ReactNode;
+  appTitle?: ReactNode;
+  appSubtitle?: ReactNode;
+  sidebarSections?: Array<{
+    key: string;
+    title?: ReactNode;
+    items?: Array<{
+      key: string;
+      to: string;
+      label: ReactNode;
+      icon?: ReactNode;
+      exact?: boolean;
+    }>;
+    content?: ReactNode;
+  }>;
+  breadcrumbContent?: ReactNode;
+  topbarItems?: ReactNode;
+}
+
+export interface SectionProps {
+  title?: ReactNode;
+  description?: ReactNode;
+  actions?: ReactNode;
+  children: ReactNode;
+}
+
+export interface FormSectionProps extends SectionProps {}
+
+export interface InfoPanelProps {
+  title?: ReactNode;
+  description?: ReactNode;
+  icon?: ReactNode;
+  tone?: "default" | "info" | "success" | "warning" | "destructive";
+  children?: ReactNode;
 }
 
 export interface UiComponents {
@@ -219,9 +286,15 @@ export interface UiComponents {
   Switch: ComponentType<SwitchProps>;
   Tabs: ComponentType<TabsProps>;
   Tooltip: ComponentType<TooltipProps>;
+  AppShell: ComponentType<AppShellProps>;
   PageLayout: ComponentType<PageLayoutProps>;
   DetailPageLayout: ComponentType<DetailPageLayoutProps>;
+  Section: ComponentType<SectionProps>;
+  FormSection: ComponentType<FormSectionProps>;
   SummaryCard: ComponentType<SummaryCardProps>;
+  MetricCard: ComponentType<MetricCardProps>;
+  PropertyList: ComponentType<PropertyListProps>;
+  InfoPanel: ComponentType<InfoPanelProps>;
   EmptyState: ComponentType<EmptyStateProps>;
   ErrorState: ComponentType<ErrorStateProps>;
   Dialog: ComponentType<DialogProps>;

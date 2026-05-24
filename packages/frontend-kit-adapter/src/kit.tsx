@@ -3,14 +3,12 @@ import { adapterToast } from "./toast";
 import { Alert } from "./wrappers/alert";
 import { Avatar } from "./wrappers/avatar";
 import { ConfirmDialog } from "./wrappers/confirm-dialog";
-import { DetailPageLayout } from "./wrappers/detail-page-layout";
 import { Dialog } from "./wrappers/dialog";
 import { DropdownMenu } from "./wrappers/dropdown-menu";
 import { EmptyState } from "./wrappers/empty-state";
 import { ErrorState } from "./wrappers/error-state";
 import { Input } from "./wrappers/input";
 import { Loading } from "./wrappers/loading";
-import { PageLayout } from "./wrappers/page-layout";
 import { PasswordInput } from "./wrappers/password-input";
 import { SearchableMultiSelect } from "./wrappers/searchable-multi-select";
 import { SearchableSelect } from "./wrappers/searchable-select";
@@ -22,11 +20,19 @@ import { Tabs } from "./wrappers/tabs";
 import { Textarea } from "./wrappers/textarea";
 import { Tooltip } from "./wrappers/tooltip";
 import {
+  AppShell,
   Badge,
   Button,
   Card,
+  DetailPageLayout,
+  FormSection,
+  InfoPanel,
   Label,
+  MetricCard,
+  PageLayout,
   Pagination,
+  PropertyList,
+  Section,
 } from "@maslazu/lazu-ui";
 
 export function createLazuFrontendKitAdapter(): UiKit {
@@ -45,9 +51,15 @@ export function createLazuFrontendKitAdapter(): UiKit {
       Switch,
       Tabs,
       Tooltip,
+      AppShell,
       PageLayout,
       DetailPageLayout,
+      Section,
+      FormSection,
       SummaryCard,
+      MetricCard,
+      PropertyList,
+      InfoPanel,
       EmptyState,
       ErrorState,
       Dialog,

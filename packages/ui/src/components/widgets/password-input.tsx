@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-import { Input } from "./input";
-import { Label } from "./label";
+import { Input } from "../primitives/input";
+import { Label } from "../primitives/label";
 
 interface FormRegisterReturnLike {
   name: string;

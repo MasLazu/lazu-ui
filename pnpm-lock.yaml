@@ -23,6 +23,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@maslazu/frontend-kit-ui-contracts':
+        specifier: ^0.1.0
+        version: 0.1.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@maslazu/lazu-ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -158,6 +161,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
+      react-router:
+        specifier: 7.12.0
+        version: 7.12.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       tailwindcss:
         specifier: ^3.4.19
         version: 3.4.19
@@ -520,6 +526,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@maslazu/frontend-kit-ui-contracts@0.1.0':
+    resolution: {integrity: sha512-ddAiwfjAZSMpcIiIuFQTXagR3LzWYaAPsaL0IBqdBl8G36FS2KIPbox6ZZB46ev3rAiL5F+ej45R3udD+Zpleg==, tarball: https://npm.pkg.github.com/download/@maslazu/frontend-kit-ui-contracts/0.1.0/3078834b171ff8ab2065444669ee00cb3c582b4a}
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
 
   '@mjackson/node-fetch-server@0.2.0':
     resolution: {integrity: sha512-EMlH1e30yzmTpGLQjlFmaDAjyOeZhng1/XCd7DExR8PNAnG/G1tyruZxEoUe11ClnwGhGrtsdnyyUx1frSzjng==}
@@ -2160,6 +2172,11 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@maslazu/frontend-kit-ui-contracts@0.1.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
 
   '@mjackson/node-fetch-server@0.2.0': {}
 

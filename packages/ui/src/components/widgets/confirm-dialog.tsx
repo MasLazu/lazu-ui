@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button } from "./button";
+import { Button } from "../primitives/button";
 import {
   Dialog,
   DialogContent,

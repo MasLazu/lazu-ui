@@ -1,12 +1,13 @@
 import * as React from "react";
 import type { ReactNode } from "react";
-import { AlertCircle, Bell, CreditCard, FileText, Mail, MoreHorizontal, Sparkles } from "lucide-react";
+import { AlertCircle, Bell, CreditCard, FileText, Github, LayoutDashboard, Mail, MoreHorizontal, ShieldAlert, ShieldUser, SlidersHorizontal, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import {
   Alert,
   AlertDescription,
   AlertTitle,
+  AppShell,
   Avatar,
   Badge,
   Button,
@@ -33,6 +34,10 @@ import {
   Input,
   Label,
   Loading,
+  DetailPageLayout,
+  FormSection,
+  InfoPanel,
+  MetricCard,
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -41,14 +46,17 @@ import {
   NavigationMenuTrigger,
   PasswordInput,
   Pagination,
+  PageLayout,
   SearchableMultiSelect,
   SearchableSelect,
+  PropertyList,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
   Switch,
+  Section,
   Table,
   TableBody,
   TableCell,
@@ -119,11 +127,19 @@ export type ComponentDoc = {
 
 const previewCodeById = {
   button: `<div className="flex flex-wrap gap-3">\n  <Button>Save changes</Button>\n  <Button variant="outline">Secondary</Button>\n  <Button variant="ghost">Ghost</Button>\n  <Button variant="destructive">Delete</Button>\n</div>`,
+  "app-shell": `<AppShell\n  appIcon={<img src="/favicon.svg" alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />}\n  appTitle="Lazu UI"\n  appSubtitle="Showcase"\n  sidebarSections={[\n    {\n      key: "docs",\n      title: "Documentation",\n      items: [\n        { key: "overview", to: "/", label: "Overview", icon: <LayoutDashboard className="size-4" />, exact: true },\n        { key: "operations", to: "/operations", label: "Operations", icon: <ShieldAlert className="size-4" /> },\n        { key: "forms", to: "/forms", label: "Form Lab", icon: <SlidersHorizontal className="size-4" /> },\n      ],\n    },\n  ]}\n  breadcrumbContent={<span className="font-bold text-foreground">Overview</span>}\n  topbarItems={<Button variant="ghost" size="sm"><Github className="size-4" /></Button>}\n>\n  <PageLayout pageIcon={LayoutDashboard} title="Security operations overview" />\n</AppShell>`,
+  "page-layout": `<PageLayout\n  pageIcon={LayoutDashboard}\n  title="Security operations overview"\n  description="Feature page layout with shared header treatment."\n  actions={<Button>Export status</Button>}\n>\n  <Section title="Response stream" description="Composed layout content.">\n    <InfoPanel title="Contract boundary preserved" description="Feature modules stay UI-library-agnostic." />\n  </Section>\n</PageLayout>`,
+  "detail-page-layout": `<DetailPageLayout\n  pageIcon={ShieldUser}\n  title="Analyst profile"\n  description="Detail layout with main content and aside surface."\n  backTo="/analysts"\n  actions={<Button variant="destructive">Suspend access</Button>}\n  aside={<PropertyList items={[{ label: "Role", value: "Privileged responder" }]} />}\n>\n  <Section title="Access posture" description="Primary detail content." />\n</DetailPageLayout>`,
   card: `<Card className="max-w-md">\n  <CardHeader>\n    <CardTitle>Weekly revenue</CardTitle>\n    <CardDescription>Snapshot from last 7 days.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p className="text-3xl font-semibold">$24,320</p>\n  </CardContent>\n  <CardFooter>\n    <Button size="sm">Open report</Button>\n  </CardFooter>\n</Card>`,
+  section: `<Section title="Response stream" description="Use shared surface and header composition.">\n  <p className="text-sm text-muted-foreground">Place page-specific content here.</p>\n</Section>`,
+  "form-section": `<FormSection title="Workspace configuration" description="Inputs and composed controls exposed through shared contracts.">\n  <div className="grid gap-4">\n    <div className="grid gap-2">\n      <Label htmlFor="workspace-name">Workspace name</Label>\n      <Input id="workspace-name" placeholder="Beacon SOC - Jakarta" />\n    </div>\n    <div className="grid gap-2">\n      <Label htmlFor="workspace-notes">Operational notes</Label>\n      <Textarea id="workspace-notes" rows={4} />\n    </div>\n  </div>\n</FormSection>`,
   input: `<div className="grid max-w-md gap-2">\n  <Label htmlFor="email">Email address</Label>\n  <Input id="email" type="email" placeholder="ops@lazu.dev" />\n</div>`,
   badge: `<div className="flex flex-wrap gap-3">\n  <Badge>Default</Badge>\n  <Badge variant="secondary">Secondary</Badge>\n  <Badge variant="success">Healthy</Badge>\n  <Badge variant="warning">Warning</Badge>\n  <Badge variant="destructive">Failed</Badge>\n</div>`,
+  "metric-card": `<MetricCard title="Active detections" value="124" description="+18% from previous window" icon={<Sparkles className="size-4" />} />`,
   alert: `<Alert>\n  <Bell className="size-4" />\n  <AlertTitle>Deployment scheduled</AlertTitle>\n  <AlertDescription>Production rollout starts at 21:00 UTC.</AlertDescription>\n</Alert>`,
   avatar: `<div className="flex items-center gap-4">\n  <Avatar name="Maya Chen" size="sm" />\n  <Avatar name="Dimas Prakoso" size="md" />\n  <Avatar name="Siti Rahmawati" size="lg" />\n</div>`,
+  "info-panel": `<InfoPanel tone="info" title="Contract boundary preserved" description="Feature modules stay UI-library-agnostic." icon={<Sparkles className="size-4" />} />`,
+  "property-list": `<PropertyList\n  items={[\n    { label: "Email", value: "alya@maslazu.dev" },\n    { label: "Role", value: "Privileged responder" },\n    { label: "Last activity", value: "3 minutes ago" },\n  ]}\n/>`,
   textarea: `<div className="grid max-w-xl gap-2">\n  <Label htmlFor="notes">Handover notes</Label>\n  <Textarea id="notes" placeholder="Summarize incident timeline, actions, and follow-up items." />\n</div>`,
   dialog: `<Dialog>\n  <DialogTrigger render={<Button>Open dialog</Button>} />\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Create incident note</DialogTitle>\n      <DialogDescription>Capture timeline details before escalation.</DialogDescription>\n    </DialogHeader>\n  </DialogContent>\n</Dialog>`,
   tooltip: `<TooltipProvider>\n  <Tooltip>\n    <TooltipTrigger render={<Button variant="outline">Hover for hint</Button>} />\n    <TooltipContent>Critical actions should explain impact before click.</TooltipContent>\n  </Tooltip>\n</TooltipProvider>`,
@@ -144,11 +160,19 @@ const previewCodeById = {
 
 const componentPreviews = {
   button: <div className="flex flex-wrap gap-3"><Button>Save changes</Button><Button variant="outline">Secondary</Button><Button variant="ghost">Ghost</Button><Button variant="destructive">Delete</Button></div>,
+  "app-shell": <AppShellPreview />,
+  "page-layout": <PageLayout pageIcon={LayoutDashboard} title="Security operations overview" description="Feature page layout with shared header treatment." actions={<Button>Export status</Button>}><Section title="Response stream" description="Composed layout content."><InfoPanel title="Contract boundary preserved" description="Feature modules stay UI-library-agnostic." icon={<Sparkles className="size-4" />} /></Section></PageLayout>,
+  "detail-page-layout": <DetailPageLayout pageIcon={ShieldUser} title="Analyst profile" description="Detail layout with main content and aside surface." backTo="/analysts" actions={<Button variant="destructive">Suspend access</Button>} aside={<PropertyList items={[{ label: "Role", value: "Privileged responder" }, { label: "Last activity", value: "3 minutes ago" }]} />}><Section title="Access posture" description="Primary detail content."><p className="text-sm text-muted-foreground">Assigned to cloud posture, endpoint response, and privileged identity reviews.</p></Section></DetailPageLayout>,
   card: <Card className="max-w-md"><CardHeader><CardTitle>Weekly revenue</CardTitle><CardDescription>Snapshot from last 7 days.</CardDescription></CardHeader><CardContent><p className="text-3xl font-semibold">$24,320</p></CardContent><CardFooter><Button size="sm">Open report</Button></CardFooter></Card>,
+  section: <Section title="Response stream" description="Use shared surface and header composition."><p className="text-sm text-muted-foreground">Place page-specific content here.</p></Section>,
+  "form-section": <FormSection title="Workspace configuration" description="Inputs and composed controls exposed through shared contracts."><div className="grid gap-4"><div className="grid gap-2"><Label htmlFor="preview-workspace-name">Workspace name</Label><Input id="preview-workspace-name" placeholder="Beacon SOC - Jakarta" /></div><div className="grid gap-2"><Label htmlFor="preview-workspace-notes">Operational notes</Label><Textarea id="preview-workspace-notes" rows={4} /></div></div></FormSection>,
   input: <div className="grid max-w-md gap-2"><Label htmlFor="email">Email address</Label><Input id="email" type="email" placeholder="ops@lazu.dev" /></div>,
   badge: <div className="flex flex-wrap gap-3"><Badge>Default</Badge><Badge variant="secondary">Secondary</Badge><Badge variant="success">Healthy</Badge><Badge variant="warning">Warning</Badge><Badge variant="destructive">Failed</Badge></div>,
+  "metric-card": <MetricCard title="Active detections" value="124" description="+18% from previous window" icon={<Sparkles className="size-4" />} />,
   alert: <div className="grid max-w-2xl gap-4"><Alert><Bell className="size-4" /><AlertTitle>Deployment scheduled</AlertTitle><AlertDescription>Production rollout starts at 21:00 UTC.</AlertDescription></Alert><Alert variant="destructive"><AlertCircle className="size-4" /><AlertTitle>Sync failed</AlertTitle><AlertDescription>Payment reconciliation queue stopped after 4 retries.</AlertDescription></Alert></div>,
   avatar: <div className="flex items-center gap-4"><Avatar name="Maya Chen" size="sm" /><Avatar name="Dimas Prakoso" size="md" /><Avatar name="Siti Rahmawati" size="lg" /></div>,
+  "info-panel": <InfoPanel tone="info" title="Contract boundary preserved" description="Feature modules stay UI-library-agnostic." icon={<Sparkles className="size-4" />} />,
+  "property-list": <PropertyList items={[{ label: "Email", value: "alya@maslazu.dev" }, { label: "Role", value: "Privileged responder" }, { label: "Last activity", value: "3 minutes ago" }]} />,
   textarea: <div className="grid max-w-xl gap-2"><Label htmlFor="notes">Handover notes</Label><Textarea id="notes" placeholder="Summarize incident timeline, actions, and follow-up items." /></div>,
   dialog: <Dialog><DialogTrigger render={<Button>Open dialog</Button>} /><DialogContent><DialogHeader><DialogTitle>Create incident note</DialogTitle><DialogDescription>Capture timeline details before escalation.</DialogDescription></DialogHeader><div className="grid gap-2"><Label htmlFor="dialog-title">Title</Label><Input id="dialog-title" placeholder="Suspicious outbound traffic" /></div><DialogFooter><Button variant="outline">Cancel</Button><Button>Save note</Button></DialogFooter></DialogContent></Dialog>,
   tooltip: <TooltipProvider><Tooltip><TooltipTrigger render={<Button variant="outline">Hover for hint</Button>} /><TooltipContent>Critical actions should explain impact before click.</TooltipContent></Tooltip></TooltipProvider>,
@@ -169,11 +193,19 @@ const componentPreviews = {
 
 const baseDefinitions = {
   button: { title: "Button", description: "Primary action trigger with size and variant control.", importPath: 'import { Button } from "@maslazu/lazu-ui";' },
+  "app-shell": { title: "App Shell", description: "Shared application shell with sidebar, topbar, and injected navigation chrome.", importPath: 'import { AppShell } from "@maslazu/lazu-ui";' },
+  "page-layout": { title: "Page Layout", description: "Page-level frame with icon, title, description, actions, and content stack.", importPath: 'import { PageLayout } from "@maslazu/lazu-ui";' },
+  "detail-page-layout": { title: "Detail Page Layout", description: "Page layout variant with primary content and optional aside column.", importPath: 'import { DetailPageLayout } from "@maslazu/lazu-ui";' },
   card: { title: "Card", description: "Structured surface for grouped content and actions.", importPath: 'import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@maslazu/lazu-ui";' },
+  section: { title: "Section", description: "Composed card surface with shared header for page-level content groups.", importPath: 'import { Section } from "@maslazu/lazu-ui";' },
+  "form-section": { title: "Form Section", description: "Form-oriented section surface used by showcase forms and settings screens.", importPath: 'import { FormSection } from "@maslazu/lazu-ui";' },
   input: { title: "Input", description: "Single-line text field for forms and search.", importPath: 'import { Input, Label } from "@maslazu/lazu-ui";' },
   badge: { title: "Badge", description: "Compact status pill for small metadata and counts.", importPath: 'import { Badge } from "@maslazu/lazu-ui";' },
+  "metric-card": { title: "Metric Card", description: "Compact metric surface for dashboard KPIs and status snapshots.", importPath: 'import { MetricCard } from "@maslazu/lazu-ui";' },
   alert: { title: "Alert", description: "Inline feedback block for warnings, info, and destructive messages.", importPath: 'import { Alert, AlertDescription, AlertTitle } from "@maslazu/lazu-ui";' },
   avatar: { title: "Avatar", description: "Profile image with deterministic fallback initials and color.", importPath: 'import { Avatar } from "@maslazu/lazu-ui";' },
+  "info-panel": { title: "Info Panel", description: "Informational callout block for contextual notes inside feature pages.", importPath: 'import { InfoPanel } from "@maslazu/lazu-ui";' },
+  "property-list": { title: "Property List", description: "Label-value list for profiles, summaries, and detail sidebars.", importPath: 'import { PropertyList } from "@maslazu/lazu-ui";' },
   textarea: { title: "Textarea", description: "Multi-line text field for notes, feedback, and long-form input.", importPath: 'import { Label, Textarea } from "@maslazu/lazu-ui";' },
   dialog: { title: "Dialog", description: "Modal overlay for focused tasks and confirmations.", importPath: 'import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@maslazu/lazu-ui";' },
   tooltip: { title: "Tooltip", description: "Compact hover/focus hint for supporting context.", importPath: 'import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@maslazu/lazu-ui";' },
@@ -277,6 +309,18 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
       },
     ],
   }),
+  "app-shell": createDoc("app-shell", {
+    composition: { description: "Use AppShell at route-layout level to own shared chrome and render feature pages inside nested content area.", tree: "AppShell\n├── appIcon\n├── appTitle\n├── appSubtitle\n├── sidebarSections\n├── breadcrumbContent\n├── topbarItems\n└── children" },
+    api: [{ name: "AppShell", description: "AppShell renders sidebar and topbar chrome while the app injects product-specific navigation and controls.", props: [{ prop: "appIcon", type: "ReactNode", default: "-" }, { prop: "appTitle", type: "ReactNode", default: '"Lazu UI"' }, { prop: "appSubtitle", type: "ReactNode", default: '"Showcase"' }, { prop: "sidebarSections", type: "AppShellSection[]", default: "[]" }, { prop: "breadcrumbContent", type: "ReactNode", default: "-" }, { prop: "topbarItems", type: "ReactNode", default: "-" }, { prop: "desktopCollapsed", type: "boolean", default: "false" }, { prop: "mobileOpen", type: "boolean", default: "false" }] }],
+  }),
+  "page-layout": createDoc("page-layout", {
+    composition: { description: "Use PageLayout for feature-page headers with shared icon, actions, and content rhythm.", tree: "PageLayout\n├── pageIcon\n├── title\n├── description\n├── actions\n└── children" },
+    api: [{ name: "PageLayout", description: "PageLayout renders page header chrome used by showcase feature screens.", props: [{ prop: "pageIcon", type: "Lucide icon component", default: "-" }, { prop: "title", type: "ReactNode", default: "required" }, { prop: "description", type: "ReactNode", default: "-" }, { prop: "actions", type: "ReactNode", default: "-" }] }],
+  }),
+  "detail-page-layout": createDoc("detail-page-layout", {
+    composition: { description: "Use DetailPageLayout when a page needs left-side back navigation, header actions, main content, and an optional summary aside.", tree: "DetailPageLayout\n├── onBack | backTo\n├── pageIcon\n├── title\n├── description\n├── toolbar\n├── actions\n├── secondaryActions\n├── aside\n└── children" },
+    api: [{ name: "DetailPageLayout", description: "DetailPageLayout extends shared page framing with built-in back navigation and optional aside column.", props: [{ prop: "pageIcon", type: "Lucide icon component", default: "-" }, { prop: "title", type: "ReactNode", default: "required" }, { prop: "description", type: "ReactNode", default: "-" }, { prop: "onBack", type: "() => void", default: "-" }, { prop: "backTo", type: "string", default: "-" }, { prop: "toolbar", type: "ReactNode", default: "-" }, { prop: "actions", type: "ReactNode", default: "-" }, { prop: "secondaryActions", type: "ReactNode", default: "-" }, { prop: "aside", type: "ReactNode", default: "-" }] }],
+  }),
   card: createDoc("card", {
     composition: {
       description: "Use following composition to build card sections.",
@@ -291,12 +335,24 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
       { name: "CardFooter", description: "CardFooter aligns actions and summaries at bottom.", props: [{ prop: "className", type: "string", default: "-" }] },
     ],
   }),
+  section: createDoc("section", {
+    composition: { description: "Section composes Card and SectionHeader into consistent page content blocks.", tree: "Section\n├── SectionHeader\n└── children" },
+    api: [{ name: "Section", description: "Section groups related page content with shared title, description, and action treatment.", props: [{ prop: "title", type: "ReactNode", default: "-" }, { prop: "description", type: "ReactNode", default: "-" }, { prop: "actions", type: "ReactNode", default: "-" }, { prop: "inset", type: "boolean", default: "true" }] }],
+  }),
+  "form-section": createDoc("form-section", {
+    composition: { description: "FormSection applies form-oriented grouping on top of Section.", tree: "FormSection\n├── SectionHeader\n└── form content" },
+    api: [{ name: "FormSection", description: "FormSection is the showcase pattern for grouped settings and form blocks.", props: [{ prop: "title", type: "ReactNode", default: "-" }, { prop: "description", type: "ReactNode", default: "-" }, { prop: "actions", type: "ReactNode", default: "-" }] }],
+  }),
   input: createDoc("input", {
     composition: { description: "Use following composition to build labeled text input.", tree: "Label\n└── Input" },
     api: [{ name: "Input", description: "Input renders single-line text, email, search, and date-time fields.", props: [{ prop: "type", type: '"text" | "email" | "password" | string', default: '"text"' }, { prop: "className", type: "string", default: "-" }, { prop: "disabled", type: "boolean", default: "false" }] }],
   }),
   badge: createDoc("badge", {
     api: [{ name: "Badge", description: "Badge displays small semantic status labels and counters.", props: [{ prop: "variant", type: '"default" | "secondary" | "success" | "warning" | "destructive"', default: '"default"' }, { prop: "className", type: "string", default: "-" }] }],
+  }),
+  "metric-card": createDoc("metric-card", {
+    composition: { description: "MetricCard is standalone KPI surface for dashboard rows.", tree: "MetricCard" },
+    api: [{ name: "MetricCard", description: "MetricCard displays compact metric title, value, description, and optional icon.", props: [{ prop: "title", type: "ReactNode", default: "required" }, { prop: "value", type: "ReactNode", default: "required" }, { prop: "description", type: "ReactNode", default: "-" }, { prop: "icon", type: "ReactNode", default: "-" }] }],
   }),
   alert: createDoc("alert", {
     usage: {
@@ -320,6 +376,14 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
   avatar: createDoc("avatar", {
     composition: { description: "Avatar is standalone surface with optional image and deterministic fallback.", tree: "Avatar" },
     api: [{ name: "Avatar", description: "Avatar renders person initials or image fallback by name.", props: [{ prop: "name", type: "string", default: "required" }, { prop: "src", type: "string", default: "-" }, { prop: "seed", type: "string", default: "-" }, { prop: "size", type: '"sm" | "md" | "lg"', default: '"md"' }, { prop: "className", type: "string", default: "-" }] }],
+  }),
+  "info-panel": createDoc("info-panel", {
+    composition: { description: "InfoPanel is standalone contextual callout for inline guidance and status notes.", tree: "InfoPanel" },
+    api: [{ name: "InfoPanel", description: "InfoPanel renders toned contextual guidance used heavily in showcase overview pages.", props: [{ prop: "title", type: "ReactNode", default: "-" }, { prop: "description", type: "ReactNode", default: "-" }, { prop: "icon", type: "ReactNode", default: "-" }, { prop: "tone", type: '"default" | "info" | "success" | "warning" | "destructive"', default: '"default"' }] }],
+  }),
+  "property-list": createDoc("property-list", {
+    composition: { description: "PropertyList is standalone label-value stack for sidebars and detail summaries.", tree: "PropertyList\n└── items[]" },
+    api: [{ name: "PropertyList", description: "PropertyList renders compact label-value rows used in detail-page asides.", props: [{ prop: "items", type: "Array<{ label: ReactNode; value: ReactNode; hint?: ReactNode }>", default: "required" }] }],
   }),
   textarea: createDoc("textarea", {
     composition: { description: "Use following composition to build multi-line form input.", tree: "Label\n└── Textarea" },
@@ -572,5 +636,80 @@ function ConfirmDialogDemo() {
         variant="destructive"
       />
     </>
+  );
+}
+
+function AppShellPreview() {
+  return (
+    <div className="h-[680px] overflow-hidden rounded-2xl border border-border/60 bg-background text-foreground">
+      <div className="flex h-full w-full overflow-hidden bg-background text-foreground">
+        <aside className="flex w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground shadow-xl md:shadow-none">
+          <div className="w-full px-4 py-3">
+            <div className="flex w-full items-center gap-3.5 rounded-xl px-3 py-2.5">
+              <img src="/favicon.svg" alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />
+              <div className="min-w-0 flex-1 text-left">
+                <p className="truncate text-lg font-bold text-sidebar-foreground">Lazu UI</p>
+                <p className="truncate text-xs uppercase tracking-[0.2em] text-sidebar-foreground/60">Showcase</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-hidden py-4">
+            <nav className="w-64 space-y-6 px-4">
+              <div className="space-y-1 overflow-hidden">
+                <h4 className="whitespace-nowrap px-2 py-2 text-xs font-semibold uppercase text-sidebar-foreground/60">Documentation</h4>
+                <div className="interactive-selected flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium">
+                  <LayoutDashboard className="size-4 shrink-0" />
+                  <span className="truncate">Overview</span>
+                </div>
+                <div className="interactive-chrome flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70">
+                  <ShieldAlert className="size-4 shrink-0" />
+                  <span className="truncate">Operations</span>
+                </div>
+                <div className="interactive-chrome flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70">
+                  <SlidersHorizontal className="size-4 shrink-0" />
+                  <span className="truncate">Form Lab</span>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </aside>
+
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <header className="flex h-16 w-full shrink-0 bg-sidebar text-sidebar-foreground">
+            <div className="flex min-w-0 flex-1 items-center justify-between gap-3 px-4 sm:px-6">
+              <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+                <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                  <Button variant="ghost" size="sm" className="interactive-chrome h-10 w-10 rounded-xl p-0 text-sidebar-foreground/70">
+                    <span className="text-base">||</span>
+                  </Button>
+                  <div className="flex min-w-0 items-center gap-2 text-sm font-medium text-muted-foreground">
+                    <span className="truncate">Dev Kit</span>
+                    <span className="px-0.5 text-lg leading-none text-muted-foreground/30">&rsaquo;</span>
+                    <span className="font-bold text-foreground">Overview</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3">
+                <Button variant="ghost" size="sm">
+                  <Github className="size-4" />
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+            <main className="min-h-0 min-w-0 flex-1 overflow-y-auto rounded-tl-[2rem] rounded-tr-[2rem] border border-border/60 bg-surface p-6 text-surface-foreground md:p-8 md:pb-8">
+              <PageLayout pageIcon={LayoutDashboard} title="Security operations overview" description="Shared app shell preview using showcase-like structure.">
+                <Section title="Response stream" description="Feature content stays inside shell body.">
+                  <InfoPanel title="Contract boundary preserved" description="Shell composes app chrome once." icon={<Sparkles className="size-4" />} />
+                </Section>
+              </PageLayout>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
