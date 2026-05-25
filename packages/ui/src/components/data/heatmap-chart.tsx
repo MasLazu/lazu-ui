@@ -49,14 +49,20 @@ export function HeatmapChart({ data, xLabels, yLabels, unit, height = 320, empty
         orient: "horizontal",
         left: "center",
         bottom: 0,
-        inRange: { color: ["hsl(var(--background))", "hsl(var(--chart-1))"] },
+        inRange: { color: ["#eff6ff", "#2563eb"] },
       },
       series: [
         {
           type: "heatmap",
           data: data.filter((entry) => entry.value !== null).map((entry) => [xAxis.indexOf(entry.x), yAxis.indexOf(entry.y), entry.value]),
-          label: { show: true, color: "hsl(var(--foreground))" },
-          emphasis: { itemStyle: { shadowBlur: 10, shadowColor: "rgba(0, 0, 0, 0.15)" } },
+          label: { show: true, color: "#0f172a" },
+          itemStyle: { borderColor: "#ffffff", borderWidth: 1 },
+          emphasis: {
+            disabled: true,
+            itemStyle: { shadowBlur: 0, shadowColor: "transparent" },
+          },
+          blur: { itemStyle: { opacity: 1 } },
+          select: { disabled: true },
         },
       ],
     };

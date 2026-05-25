@@ -10,11 +10,11 @@ const ReactECharts =
   EChartsModule;
 
 export const CHART_COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
+  "#2563eb",
+  "#16a34a",
+  "#f59e0b",
+  "#db2777",
+  "#8b5cf6",
 ];
 
 const defaultTheme: Record<string, unknown> = {
