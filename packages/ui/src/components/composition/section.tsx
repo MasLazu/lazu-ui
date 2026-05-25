@@ -13,7 +13,7 @@ const Section = React.forwardRef<HTMLDivElement, SectionProps>(function Section(
   ref,
 ) {
   return (
-    <Card ref={ref} className={cn("border-border/70 bg-surface", className)} {...props}>
+    <Card ref={ref} className={cn("border-border/70", className)} {...props}>
       {title || description || actions ? (
         <CardHeader>
           <SectionHeader title={title} description={description} actions={actions} />

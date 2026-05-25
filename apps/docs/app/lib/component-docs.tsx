@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { ReactNode } from "react";
-import { AlertCircle, Bell, CreditCard, FileText, Github, LayoutDashboard, Mail, MoreHorizontal, ShieldAlert, ShieldUser, SlidersHorizontal, Sparkles } from "lucide-react";
+import { AlertCircle, Bell, ChevronDown, CreditCard, FileText, Github, LayoutDashboard, Mail, MoreHorizontal, ShieldAlert, ShieldUser, SlidersHorizontal, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -127,7 +127,7 @@ export type ComponentDoc = {
 
 const previewCodeById = {
   button: `<div className="flex flex-wrap gap-3">\n  <Button>Save changes</Button>\n  <Button variant="outline">Secondary</Button>\n  <Button variant="ghost">Ghost</Button>\n  <Button variant="destructive">Delete</Button>\n</div>`,
-  "app-shell": `<AppShell\n  appIcon={<img src="/favicon.svg" alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />}\n  appTitle="Lazu UI"\n  appSubtitle="Showcase"\n  sidebarSections={[\n    {\n      key: "docs",\n      title: "Documentation",\n      items: [\n        { key: "overview", to: "/", label: "Overview", icon: <LayoutDashboard className="size-4" />, exact: true },\n        { key: "operations", to: "/operations", label: "Operations", icon: <ShieldAlert className="size-4" /> },\n        { key: "forms", to: "/forms", label: "Form Lab", icon: <SlidersHorizontal className="size-4" /> },\n      ],\n    },\n  ]}\n  breadcrumbContent={<span className="font-bold text-foreground">Overview</span>}\n  topbarItems={<Button variant="ghost" size="sm"><Github className="size-4" /></Button>}\n>\n  <PageLayout pageIcon={LayoutDashboard} title="Security operations overview" />\n</AppShell>`,
+  "app-shell": `<AppShell\n  appIcon={<img src="/favicon.svg" alt="Lazu UI" className="h-11 w-11 shrink-0 rounded-xl" />}\n  appTitle="Lazu UI"\n  appSubtitle="Showcase"\n  sidebarSections={[\n    {\n      key: "docs",\n      title: "Documentation",\n      items: [\n        { key: "overview", to: "/", label: "Overview", icon: <LayoutDashboard className="size-4" />, exact: true },\n        { key: "operations", to: "/operations", label: "Operations", icon: <ShieldAlert className="size-4" /> },\n        { key: "forms", to: "/forms", label: "Form Lab", icon: <SlidersHorizontal className="size-4" /> },\n        {\n          key: "people",\n          label: "People",\n          icon: <ShieldUser className="size-4" />,\n          defaultExpanded: true,\n          children: [\n            { key: "profile", to: "/profile", label: "Profile", icon: <ShieldUser className="size-4" /> },\n          ],\n        },\n      ],\n    },\n  ]}\n  breadcrumbContent={<span className="font-bold text-foreground">Overview</span>}\n  topbarItems={<Button variant="ghost" size="sm"><Github className="size-4" /></Button>}\n>\n  <PageLayout pageIcon={LayoutDashboard} title="Security operations overview" />\n</AppShell>`,
   "page-layout": `<PageLayout\n  pageIcon={LayoutDashboard}\n  title="Security operations overview"\n  description="Feature page layout with shared header treatment."\n  actions={<Button>Export status</Button>}\n>\n  <Section title="Response stream" description="Composed layout content.">\n    <InfoPanel title="Contract boundary preserved" description="Feature modules stay UI-library-agnostic." />\n  </Section>\n</PageLayout>`,
   "detail-page-layout": `<DetailPageLayout\n  pageIcon={ShieldUser}\n  title="Analyst profile"\n  description="Detail layout with main content and aside surface."\n  backTo="/analysts"\n  actions={<Button variant="destructive">Suspend access</Button>}\n  aside={<PropertyList items={[{ label: "Role", value: "Privileged responder" }]} />}\n>\n  <Section title="Access posture" description="Primary detail content." />\n</DetailPageLayout>`,
   card: `<Card className="max-w-md">\n  <CardHeader>\n    <CardTitle>Weekly revenue</CardTitle>\n    <CardDescription>Snapshot from last 7 days.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p className="text-3xl font-semibold">$24,320</p>\n  </CardContent>\n  <CardFooter>\n    <Button size="sm">Open report</Button>\n  </CardFooter>\n</Card>`,
@@ -310,8 +310,8 @@ export const componentDocs: Record<ComponentDocId, ComponentDoc> = {
     ],
   }),
   "app-shell": createDoc("app-shell", {
-    composition: { description: "Use AppShell at route-layout level to own shared chrome and render feature pages inside nested content area.", tree: "AppShell\n├── appIcon\n├── appTitle\n├── appSubtitle\n├── sidebarSections\n├── breadcrumbContent\n├── topbarItems\n└── children" },
-    api: [{ name: "AppShell", description: "AppShell renders sidebar and topbar chrome while the app injects product-specific navigation and controls.", props: [{ prop: "appIcon", type: "ReactNode", default: "-" }, { prop: "appTitle", type: "ReactNode", default: '"Lazu UI"' }, { prop: "appSubtitle", type: "ReactNode", default: '"Showcase"' }, { prop: "sidebarSections", type: "AppShellSection[]", default: "[]" }, { prop: "breadcrumbContent", type: "ReactNode", default: "-" }, { prop: "topbarItems", type: "ReactNode", default: "-" }, { prop: "desktopCollapsed", type: "boolean", default: "false" }, { prop: "mobileOpen", type: "boolean", default: "false" }] }],
+    composition: { description: "Use AppShell at route-layout level to own shared chrome and render feature pages inside nested content area.", tree: "AppShell\n├── appIcon\n├── appTitle\n├── appSubtitle\n├── sidebarSections\n│   └── items[]\n│       └── children[]\n├── breadcrumbContent\n├── topbarItems\n└── children" },
+    api: [{ name: "AppShell", description: "AppShell renders sidebar and topbar chrome while the app injects product-specific navigation and controls.", props: [{ prop: "appIcon", type: "ReactNode", default: "-" }, { prop: "appTitle", type: "ReactNode", default: '"Lazu UI"' }, { prop: "appSubtitle", type: "ReactNode", default: '"Showcase"' }, { prop: "sidebarSections", type: "AppShellSection[]", default: "[]" }, { prop: "defaultExpanded", type: "boolean", default: "false" }, { prop: "children", type: "AppShellNavItem[]", default: "-" }, { prop: "breadcrumbContent", type: "ReactNode", default: "-" }, { prop: "topbarItems", type: "ReactNode", default: "-" }, { prop: "desktopCollapsed", type: "boolean", default: "false" }, { prop: "mobileOpen", type: "boolean", default: "false" }] }],
   }),
   "page-layout": createDoc("page-layout", {
     composition: { description: "Use PageLayout for feature-page headers with shared icon, actions, and content rhythm.", tree: "PageLayout\n├── pageIcon\n├── title\n├── description\n├── actions\n└── children" },
@@ -669,6 +669,19 @@ function AppShellPreview() {
                 <div className="interactive-chrome flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70">
                   <SlidersHorizontal className="size-4 shrink-0" />
                   <span className="truncate">Form Lab</span>
+                </div>
+                <div className="interactive-chrome flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70">
+                  <ShieldUser className="size-4 shrink-0" />
+                  <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                    <span className="truncate">People</span>
+                    <ChevronDown className="size-4 shrink-0 text-sidebar-foreground/60" />
+                  </div>
+                </div>
+                <div className="ml-4 mt-1 space-y-1 border-l border-sidebar-border/60 pl-4">
+                  <div className="interactive-chrome flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/70">
+                    <ShieldUser className="size-4 shrink-0" />
+                    <span className="truncate">Profile</span>
+                  </div>
                 </div>
               </div>
             </nav>

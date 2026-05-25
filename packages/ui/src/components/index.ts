@@ -33,4 +33,6 @@ export * from "./composition/property-list";
 export * from "./composition/section";
 export * from "./composition/section-header";
 
+export * from "./data/index";
+
 export * from "./shell/app-shell";

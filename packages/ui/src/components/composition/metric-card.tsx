@@ -16,7 +16,7 @@ const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(function Me
   ref,
 ) {
   return (
-    <Card ref={ref} className={cn("border-border/70 bg-surface", className)} {...props}>
+    <Card ref={ref} className={cn("border-border/70", className)} {...props}>
       <CardContent className="space-y-3 pt-6">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">

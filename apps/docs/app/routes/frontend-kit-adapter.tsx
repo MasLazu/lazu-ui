@@ -60,7 +60,15 @@ export function ShowcaseShell() {
             { key: "overview", to: "/", label: "Overview", icon: <LayoutDashboard className="size-4" />, exact: true },
             { key: "operations", to: "/operations", label: "Operations", icon: <ShieldAlert className="size-4" /> },
             { key: "forms", to: "/forms", label: "Form Lab", icon: <SlidersHorizontal className="size-4" /> },
-            { key: "profile", to: "/profile", label: "Profile", icon: <ShieldUser className="size-4" /> },
+            {
+              key: "people",
+              label: "People",
+              icon: <ShieldUser className="size-4" />,
+              defaultExpanded: true,
+              children: [
+                { key: "profile", to: "/profile", label: "Profile", icon: <ShieldUser className="size-4" /> },
+              ],
+            },
           ],
         },
       ]}
@@ -202,7 +210,7 @@ export default function FrontendKitAdapterRoute() {
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p><code>appIcon</code>: brand mark shown in sidebar header.</p>
             <p><code>appTitle</code> and <code>appSubtitle</code>: product identity copy.</p>
-            <p><code>sidebarSections</code>: grouped navigation items and custom sidebar content.</p>
+            <p><code>sidebarSections</code>: grouped navigation items, nested <code>children</code>, and custom sidebar content.</p>
             <p><code>breadcrumbContent</code>: route-aware breadcrumb content rendered in topbar.</p>
             <p><code>topbarItems</code>: right-side actions like version switchers or repository links.</p>
             <p><code>desktopCollapsed</code> and <code>mobileOpen</code>: shell state owned by route layout.</p>
@@ -239,7 +247,7 @@ export default function FrontendKitAdapterRoute() {
             <p>Feedback: `Dialog`, `ConfirmDialog`, `Loading`, `EmptyState`, `ErrorState`</p>
             <p>Layouts: `AppShell`, `PageLayout`, `DetailPageLayout`, `SummaryCard`</p>
             <p>Composition: `Section`, `FormSection`, `MetricCard`, `PropertyList`, `InfoPanel`</p>
-            <p>Data: `Pagination`, `DropdownMenu`, `Table`</p>
+            <p>Data: `Pagination`, `DropdownMenu`, `Table`, `Chart`, `BarChart`, `LineChart`, `HeatmapChart`, `PieChart`, `SankeyChart`, `GeoMapChart`, `GaugeChart`</p>
             <p>
               Base package docs: <Link className="text-primary hover:underline" to="/docs/installation">Installation</Link>
             </p>

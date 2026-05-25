@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 
 const toneClasses = {
-  default: "border-border/70 bg-surface text-foreground",
+  default: "border-border/70 bg-card text-card-foreground",
   info: "border-primary/20 bg-code-highlight text-foreground",
   success: "border-emerald-500/20 bg-emerald-500/5 text-foreground",
   warning: "border-amber-500/20 bg-amber-500/5 text-foreground",

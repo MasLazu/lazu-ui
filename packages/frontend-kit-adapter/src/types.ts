@@ -215,6 +215,101 @@ export interface PropertyListProps {
   items: PropertyListItem[];
 }
 
+export interface ChartSeriesDatum {
+  x: string | number;
+  y: number | null;
+}
+
+export interface ChartSeries {
+  name: string;
+  data: ChartSeriesDatum[];
+  color?: string;
+}
+
+export interface PieChartDatum {
+  name: string;
+  value: number;
+  color?: string;
+}
+
+export interface HeatmapChartDatum {
+  x: string;
+  y: string;
+  value: number | null;
+}
+
+export interface SankeyChartNode {
+  name: string;
+}
+
+export interface SankeyChartLink {
+  source: string;
+  target: string;
+  value: number;
+}
+
+export interface GeoMapChartDatum {
+  name: string;
+  value: number;
+}
+
+export interface GaugeChartThreshold {
+  stop: number;
+  color: string;
+}
+
+export interface BaseChartProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+  height?: number | string;
+  emptyMessage?: ReactNode;
+}
+
+export interface ChartProps extends BaseChartProps {
+  option: Record<string, unknown> | null | undefined;
+}
+
+export interface BarChartProps extends BaseChartProps {
+  series: ChartSeries[];
+  layout?: "vertical" | "horizontal";
+  xLabelRotate?: number;
+  xLabelMaxLength?: number;
+  showLabels?: boolean;
+}
+
+export interface LineChartProps extends BaseChartProps {
+  series: ChartSeries[];
+  stacked?: boolean;
+  unit?: string | null;
+}
+
+export interface HeatmapChartProps extends BaseChartProps {
+  data: HeatmapChartDatum[];
+  xLabels?: string[];
+  yLabels?: string[];
+  unit?: string | null;
+}
+
+export interface PieChartProps extends BaseChartProps {
+  data: PieChartDatum[];
+}
+
+export interface SankeyChartProps extends BaseChartProps {
+  nodes: SankeyChartNode[];
+  links: SankeyChartLink[];
+}
+
+export interface GeoMapChartProps extends BaseChartProps {
+  data: GeoMapChartDatum[];
+  mapName?: string;
+}
+
+export interface GaugeChartProps extends BaseChartProps {
+  value: number;
+  min?: number;
+  max?: number;
+  label?: ReactNode;
+  thresholds?: GaugeChartThreshold[];
+}
+
 export interface PageLayoutProps {
   pageIcon?: PageIconComponent;
   title: ReactNode;
@@ -245,10 +340,12 @@ export interface AppShellProps {
     title?: ReactNode;
     items?: Array<{
       key: string;
-      to: string;
+      to?: string;
       label: ReactNode;
       icon?: ReactNode;
       exact?: boolean;
+      children?: any[];
+      defaultExpanded?: boolean;
     }>;
     content?: ReactNode;
   }>;
@@ -294,6 +391,14 @@ export interface UiComponents {
   SummaryCard: ComponentType<SummaryCardProps>;
   MetricCard: ComponentType<MetricCardProps>;
   PropertyList: ComponentType<PropertyListProps>;
+  Chart: ComponentType<ChartProps>;
+  BarChart: ComponentType<BarChartProps>;
+  LineChart: ComponentType<LineChartProps>;
+  HeatmapChart: ComponentType<HeatmapChartProps>;
+  PieChart: ComponentType<PieChartProps>;
+  SankeyChart: ComponentType<SankeyChartProps>;
+  GeoMapChart: ComponentType<GeoMapChartProps>;
+  GaugeChart: ComponentType<GaugeChartProps>;
   InfoPanel: ComponentType<InfoPanelProps>;
   EmptyState: ComponentType<EmptyStateProps>;
   ErrorState: ComponentType<ErrorStateProps>;

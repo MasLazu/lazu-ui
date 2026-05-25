@@ -1,16 +1,18 @@
 import * as React from "react";
 import { Link, NavLink } from "react-router";
-import { PanelLeft } from "lucide-react";
+import { ChevronDown, ChevronRight, PanelLeft } from "lucide-react";
 
 import { cn } from "../../lib/utils";
 import { Button } from "../primitives/button";
 
 export interface AppShellNavItem {
   key: string;
-  to: string;
+  to?: string;
   label: React.ReactNode;
   icon?: React.ReactNode;
   exact?: boolean;
+  children?: AppShellNavItem[];
+  defaultExpanded?: boolean;
 }
 
 export interface AppShellSection {
@@ -55,6 +57,75 @@ const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShe
   const compactDesktop = desktopCollapsed && !mobileOpen;
   const faviconPath = "/favicon.svg";
 
+  const isItemActive = React.useCallback((item: AppShellNavItem, pathname: string): boolean => {
+    const selfActive = item.to
+      ? item.exact
+        ? pathname === item.to
+        : item.to === "/"
+          ? pathname === "/"
+          : pathname === item.to || pathname.startsWith(`${item.to}/`)
+      : false;
+
+    if (selfActive) {
+      return true;
+    }
+
+    return item.children?.some((child) => isItemActive(child, pathname)) ?? false;
+  }, []);
+
+  const collectExpandedKeys = React.useCallback((items: AppShellNavItem[]) => {
+    const keys = new Set<string>();
+
+    const visit = (item: AppShellNavItem) => {
+      if (!item.children?.length) {
+        return;
+      }
+
+      if (item.defaultExpanded || isItemActive(item, location.pathname)) {
+        keys.add(item.key);
+      }
+
+      item.children.forEach(visit);
+    };
+
+    items.forEach(visit);
+    return keys;
+  }, [isItemActive, location.pathname]);
+
+  const [expandedItemKeys, setExpandedItemKeys] = React.useState<Set<string>>(() => {
+    const keys = new Set<string>();
+    sidebarSections.forEach((section) => {
+      for (const key of collectExpandedKeys(section.items ?? [])) {
+        keys.add(key);
+      }
+    });
+    return keys;
+  });
+
+  React.useEffect(() => {
+    setExpandedItemKeys((current) => {
+      const next = new Set(current);
+      sidebarSections.forEach((section) => {
+        for (const key of collectExpandedKeys(section.items ?? [])) {
+          next.add(key);
+        }
+      });
+      return next;
+    });
+  }, [collectExpandedKeys, sidebarSections]);
+
+  const toggleExpanded = React.useCallback((key: string) => {
+    setExpandedItemKeys((current) => {
+      const next = new Set(current);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  }, []);
+
   return (
     <div ref={ref} className={cn("flex h-screen w-full overflow-hidden bg-background text-foreground", className)} {...props}>
       <div
@@ -95,22 +166,15 @@ const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShe
               <div key={section.key} className={cn(compactDesktop ? "mb-8 flex flex-col space-y-4 md:items-center" : "space-y-1 overflow-hidden")}>
                 {!compactDesktop && section.title ? <h4 className="whitespace-nowrap px-2 py-2 text-xs font-semibold uppercase text-sidebar-foreground/60">{section.title}</h4> : null}
                 {section.items?.map((item) => (
-                  <NavLink
+                  <AppShellSidebarItem
                     key={item.key}
-                    to={item.to}
-                    end={item.exact}
-                    title={compactDesktop && typeof item.label === "string" ? item.label : undefined}
-                    className={({ isActive }) =>
-                      cn(
-                        "flex items-center",
-                        compactDesktop ? "interactive-chrome mx-auto mb-1 flex h-11 w-11 justify-center rounded-xl p-3" : "w-full gap-3 rounded-md px-3 py-2 text-sm font-medium",
-                        isActive ? "interactive-selected" : "interactive-chrome text-sidebar-foreground/70",
-                      )
-                    }
-                  >
-                    {item.icon ? <span className="size-4 shrink-0">{item.icon}</span> : null}
-                    {compactDesktop ? null : <span className="truncate">{item.label}</span>}
-                  </NavLink>
+                    item={item}
+                    compactDesktop={compactDesktop}
+                    pathname={location.pathname}
+                    expandedItemKeys={expandedItemKeys}
+                    onToggleExpanded={toggleExpanded}
+                    isItemActive={isItemActive}
+                  />
                 ))}
                 {section.content ? section.content : null}
               </div>
@@ -165,3 +229,86 @@ const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(function AppShe
 AppShell.displayName = "AppShell";
 
 export { AppShell };
+
+interface AppShellSidebarItemProps {
+  item: AppShellNavItem;
+  compactDesktop: boolean;
+  pathname: string;
+  expandedItemKeys: Set<string>;
+  onToggleExpanded: (key: string) => void;
+  isItemActive: (item: AppShellNavItem, pathname: string) => boolean;
+  level?: number;
+}
+
+function AppShellSidebarItem({ item, compactDesktop, pathname, expandedItemKeys, onToggleExpanded, isItemActive, level = 0 }: AppShellSidebarItemProps) {
+  const hasChildren = (item.children?.length ?? 0) > 0;
+  const isExpanded = expandedItemKeys.has(item.key);
+  const active = isItemActive(item, pathname);
+  const showIcon = level === 0;
+
+  if (hasChildren) {
+    return (
+      <div className="flex w-full flex-col">
+        <button
+          type="button"
+          onClick={() => onToggleExpanded(item.key)}
+          title={compactDesktop && typeof item.label === "string" ? item.label : undefined}
+          className={cn(
+            "flex items-center outline-none transition-all duration-200",
+            compactDesktop ? "interactive-chrome mx-auto mb-1 flex h-11 w-11 justify-center rounded-xl p-3" : "w-full gap-3 rounded-md px-3 py-2 text-sm font-medium",
+            active && !isExpanded ? "interactive-selected" : "interactive-chrome text-sidebar-foreground/70",
+          )}
+        >
+          {showIcon && item.icon ? <span className="size-4 shrink-0">{item.icon}</span> : null}
+          {compactDesktop ? null : (
+            <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
+              <span className="truncate">{item.label}</span>
+              {isExpanded ? <ChevronDown className="size-4 shrink-0 text-sidebar-foreground/60" /> : <ChevronRight className="size-4 shrink-0 text-sidebar-foreground/60" />}
+            </div>
+          )}
+        </button>
+
+        {!compactDesktop && isExpanded ? (
+          <div className="ml-4 mt-1 space-y-1 border-l border-sidebar-border/60 pl-4">
+            {item.children?.map((child) => (
+              <AppShellSidebarItem
+                key={child.key}
+                item={child}
+                compactDesktop={compactDesktop}
+                pathname={pathname}
+                expandedItemKeys={expandedItemKeys}
+                onToggleExpanded={onToggleExpanded}
+                isItemActive={isItemActive}
+                level={level + 1}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  if (!item.to) {
+    return null;
+  }
+
+  return (
+    <NavLink
+      to={item.to}
+      end={item.exact}
+      title={compactDesktop && typeof item.label === "string" ? item.label : undefined}
+      className={({ isActive }) =>
+        cn(
+          "flex items-center",
+          compactDesktop ? "interactive-chrome mx-auto mb-1 flex h-11 w-11 justify-center rounded-xl p-3" : "w-full gap-3 rounded-md px-3 py-2 text-sm font-medium",
+          !compactDesktop && level > 0 && !showIcon ? "pl-[14px]" : "",
+          !compactDesktop && level > 0 && !showIcon ? "gap-0" : "",
+          isActive ? "interactive-selected" : "interactive-chrome text-sidebar-foreground/70",
+        )
+      }
+    >
+      {showIcon && item.icon ? <span className="size-4 shrink-0">{item.icon}</span> : null}
+      {compactDesktop ? null : <span className="truncate">{item.label}</span>}
+    </NavLink>
+  );
+}
