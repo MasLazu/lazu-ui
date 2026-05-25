@@ -16,7 +16,10 @@ export function GeoMapChart({ data, height = 360, emptyMessage, className, ...pr
     return {
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" },
+        axisPointer: {
+          type: "line",
+          lineStyle: { color: "hsl(var(--border))", type: "dashed", opacity: 0.8 },
+        },
       },
       xAxis: {
         type: "category",
@@ -36,6 +39,9 @@ export function GeoMapChart({ data, height = 360, emptyMessage, className, ...pr
             color: (params: { dataIndex: number }) => CHART_COLORS[params.dataIndex % CHART_COLORS.length],
             borderRadius: [4, 4, 0, 0],
           },
+          emphasis: { disabled: true },
+          blur: { itemStyle: { opacity: 1 } },
+          select: { disabled: true },
         },
       ],
     };

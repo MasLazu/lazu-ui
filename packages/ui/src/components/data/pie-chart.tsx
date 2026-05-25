@@ -24,6 +24,9 @@ export function PieChart({ data, height = 320, emptyMessage, className, ...props
           avoidLabelOverlap: true,
           itemStyle: { borderRadius: 8, borderColor: "hsl(var(--card))", borderWidth: 2 },
           label: { color: "hsl(var(--foreground))" },
+          emphasis: { scale: false, itemStyle: { opacity: 1 } },
+          blur: { itemStyle: { opacity: 1 } },
+          select: { disabled: true },
           data: data.map((entry, index) => ({
             name: entry.name,
             value: entry.value,

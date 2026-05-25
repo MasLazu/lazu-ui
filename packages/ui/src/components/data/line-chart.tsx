@@ -23,7 +23,10 @@ export function LineChart({ series, stacked = false, unit = null, height = 320, 
     return {
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "cross" },
+        axisPointer: {
+          type: "line",
+          lineStyle: { color: "hsl(var(--border))", type: "dashed", opacity: 0.8 },
+        },
         valueFormatter: (value: number) => formatUnitValue(value, unit),
       },
       legend: { show: series.length > 1, data: series.map((entry) => entry.name) },
@@ -45,17 +48,29 @@ export function LineChart({ series, stacked = false, unit = null, height = 320, 
           lineStyle: { color: "hsl(var(--border))", type: "dashed", opacity: 0.5 },
         },
       },
-      series: series.map((entry, index) => ({
-        name: entry.name,
-        type: "line",
-        showSymbol: false,
-        smooth: true,
-        data: entry.data.map((point) => [point.x, point.y]),
-        lineStyle: { width: 2 },
-        itemStyle: { color: entry.color ?? CHART_COLORS[index % CHART_COLORS.length] },
-        areaStyle: { opacity: stacked ? 0.6 : 0.2 },
-        stack: stacked ? "total" : undefined,
-      })),
+      series: series.map((entry, index) => {
+        const color = entry.color ?? CHART_COLORS[index % CHART_COLORS.length];
+        const areaOpacity = stacked ? 0.6 : 0.2;
+
+        return {
+          name: entry.name,
+          type: "line",
+          showSymbol: false,
+          smooth: true,
+          data: entry.data.map((point) => [point.x, point.y]),
+          itemStyle: { color },
+          lineStyle: { width: 2, color },
+          areaStyle: { opacity: areaOpacity, color },
+          stack: stacked ? "total" : undefined,
+          emphasis: { disabled: true },
+          blur: {
+            lineStyle: { opacity: 1, color },
+            itemStyle: { opacity: 1, color },
+            areaStyle: { opacity: areaOpacity, color },
+          },
+          select: { disabled: true },
+        };
+      }),
     };
   }, [series, stacked, unit]);
 

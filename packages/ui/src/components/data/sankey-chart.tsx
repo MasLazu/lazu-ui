@@ -21,7 +21,7 @@ export function SankeyChart({ nodes, links, height = 360, emptyMessage, classNam
         {
           type: "sankey",
           layout: "none",
-          emphasis: { focus: "adjacency" },
+          emphasis: { disabled: true },
           data: nodes.map((node, index) => ({
             ...node,
             itemStyle: { color: CHART_COLORS[index % CHART_COLORS.length] },
@@ -30,11 +30,16 @@ export function SankeyChart({ nodes, links, height = 360, emptyMessage, classNam
           lineStyle: {
             color: "source",
             curveness: 0.5,
-            opacity: 0.35,
+            opacity: 0.55,
           },
           label: {
             color: "hsl(var(--foreground))",
           },
+          blur: {
+            itemStyle: { opacity: 1 },
+            lineStyle: { opacity: 0.55 },
+          },
+          select: { disabled: true },
         },
       ],
     };

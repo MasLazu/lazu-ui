@@ -24,7 +24,10 @@ export function BarChart({ series, layout = "vertical", xLabelRotate, xLabelMaxL
     return {
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "shadow" },
+        axisPointer: {
+          type: "line",
+          lineStyle: { color: "hsl(var(--border))", type: "dashed", opacity: 0.8 },
+        },
         formatter: (params: Array<{ axisValueLabel?: string; seriesName?: string; value?: number | [string, number] }>) => {
           if (!Array.isArray(params) || params.length === 0) return "";
           const label = params[0]?.axisValueLabel ?? "";
@@ -87,7 +90,9 @@ export function BarChart({ series, layout = "vertical", xLabelRotate, xLabelMaxL
             borderRadius: isHorizontal ? [0, 4, 4, 0] : [4, 4, 0, 0],
             opacity: 1,
           },
-          emphasis: { disabled: true, itemStyle: { opacity: 1 } },
+          emphasis: { disabled: true },
+          blur: { itemStyle: { opacity: 1 } },
+          select: { disabled: true },
         };
       }),
     };
