@@ -3,15 +3,15 @@ image: node:22
 variables:
   PNPM_VERSION: "10.8.1"
 
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
-      - node_modules
-      - packages/ui/node_modules
-      - apps/docs/node_modules
+cache:
+  key:
+    files:
+      - pnpm-lock.yaml
+  paths:
+    - .pnpm-store
+    - node_modules
+    - packages/ui/node_modules
+    - apps/docs/node_modules
 
 before_script:
   - corepack enable
