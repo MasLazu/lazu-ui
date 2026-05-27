@@ -1,0 +1,66 @@
+image: node:22
+
+variables:
+  PNPM_VERSION: "10.8.1"
+  NPM_CONFIG_REGISTRY: "https://gitlab.mataelang.net/api/v4/projects/${CI_PROJECT_ID}/packages/npm/"
+
+cache:
+  key:
+    files:
+      - pnpm-lock.yaml
+  paths:
+    - .pnpm-store
+    - node_modules
+    - packages/ui/node_modules
+    - packages/frontend-kit-adapter/node_modules
+    - apps/docs/node_modules
+
+before_script:
+  - corepack enable
+  - corepack prepare pnpm@${PNPM_VERSION} --activate
+  - pnpm config set store-dir .pnpm-store
+  - |
+    cat > .npmrc <<EOF
+    //gitlab.mataelang.net/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    @maslazu:registry=https://gitlab.mataelang.net/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+    EOF
+
+stages:
+  - build
+  - publish
+
+build:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - pnpm install --frozen-lockfile
+    - pnpm build:ui
+    - pnpm build:frontend-kit-adapter
+  artifacts:
+    paths:
+      - packages/ui/dist
+      - packages/frontend-kit-adapter/dist
+    expire_in: 1 hour
+
+publish-ui:
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_TAG
+  needs:
+    - job: build
+      artifacts: true
+  script:
+    - cd packages/ui
+    - pnpm publish --no-git-checks --access restricted
+
+publish-frontend-kit-adapter:
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_TAG
+  needs:
+    - job: build
+      artifacts: true
+  script:
+    - cd packages/frontend-kit-adapter
+    - pnpm publish --no-git-checks --access restricted
