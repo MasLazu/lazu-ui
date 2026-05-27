@@ -1,6 +1,6 @@
 {
   "name": "@maslazu/lazu-ui-frontend-kit-adapter",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Lazu UI adapter for lazu-frontend-kit UI contracts",
   "license": "UNLICENSED",
   "type": "module",
